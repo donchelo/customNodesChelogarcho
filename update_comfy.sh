@@ -5,8 +5,15 @@ set -euo pipefail
 COMFY_REPO_URL="https://github.com/comfyanonymous/ComfyUI.git"
 # Puedes sobreescribir estas variables vía entorno: COMFY_DIR, VENV_PATH, PORT
 COMFY_DIR="${COMFY_DIR:-/workspace/ComfyUI}"
-VENV_PATH="${VENV_PATH:-$COMFY_DIR/.venv}"
+# Preferir el venv de Vast.ai si existe; si no, usar .venv local
+DEFAULT_VENV="/venv/main"
+if [ -d "$DEFAULT_VENV" ]; then
+  VENV_PATH="${VENV_PATH:-$DEFAULT_VENV}"
+else
+  VENV_PATH="${VENV_PATH:-$COMFY_DIR/.venv}"
+fi
 PORT="${PORT:-8188}"
+UPGRADE_TORCH="${UPGRADE_TORCH:-0}" # 1 para forzar reinstalar/actualizar torch
 
 echo "🧠 Configurando git safe.directory para $COMFY_DIR"
 git config --global --add safe.directory "$COMFY_DIR" || true
@@ -31,8 +38,32 @@ fi
 source "$VENV_PATH/bin/activate"
 python -m pip install --upgrade pip
 
+# Instalar/actualizar PyTorch si es necesario
+NEED_TORCH=0
+python - <<'PY'
+try:
+    import torch  # noqa: F401
+    import os
+    upgrade = os.environ.get('UPGRADE_TORCH', '0') == '1'
+    # Señal de actualizar si se pidió explícitamente
+    print('HAVE_TORCH' if not upgrade else 'FORCE_UPGRADE')
+except Exception:
+    print('MISSING')
+PY
+TORCH_STATE=$(python - <<'PY'
+try:
+    import torch  # noqa: F401
+    print('present')
+except Exception:
+    print('missing')
+PY
+)
+if [ "$UPGRADE_TORCH" = "1" ] || [ "$TORCH_STATE" = "missing" ]; then
+  echo "🧩 Instalando/actualizando PyTorch CUDA 12.1 (Vast.ai/NVIDIA)"
+  pip install --upgrade torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+fi
+
 echo "🔧 Instalando/actualizando dependencias de ComfyUI"
-# Nota: PyTorch suele instalarse aparte. Aquí mantenemos lo que defina requirements.txt
 pip install --upgrade -r "$COMFY_DIR/requirements.txt"
 
 echo "🧩 Actualizando custom_nodes (si existen)"

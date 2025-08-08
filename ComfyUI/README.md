@@ -90,9 +90,9 @@ tail -n 200 -f comfy.log
 Coloca los modelos en `ComfyUI/models/…` según el tipo. Puedes definir rutas adicionales en `extra_model_paths.yaml` (usa `extra_model_paths.yaml.example` como plantilla si no existe).
 
 ## Actualizar ComfyUI
-- Linux/macOS (script mejorado que clona si falta, actualiza y lanza en background con el frontend más reciente):
+ - Linux/macOS (script mejorado que clona si falta, actualiza PyTorch/dep. y lanza en background con el frontend más reciente):
 ```bash
-# Variables opcionales: COMFY_DIR, VENV_PATH, PORT
+# Variables opcionales: COMFY_DIR, VENV_PATH, PORT, UPGRADE_TORCH=1
 bash update_comfy.sh
 ```
 - Manualmente con Git:
