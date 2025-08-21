@@ -20,6 +20,45 @@ class OpenAI_Simple_Chat:
     def __init__(self):
         self.client = None
         self.api_key = None
+        # Cargar configuración al inicializar
+        self.load_config()
+    
+    def load_config(self):
+        """Carga configuración desde archivos .env"""
+        possible_paths = [
+            os.path.join(os.path.dirname(__file__), '.env'),
+            os.path.join(os.path.dirname(__file__), 'config.env'),
+            os.path.expanduser('~/comfyui_config.env'),
+            '/workspace/ComfyUI/custom_nodes/openai_simple_chat/.env',  # Ruta absoluta
+        ]
+        
+        print("🔍 Buscando configuración de API key para OpenAI Simple Chat...")
+        
+        for config_path in possible_paths:
+            if os.path.exists(config_path):
+                try:
+                    with open(config_path, 'r') as f:
+                        for line in f:
+                            line = line.strip()
+                            if line and not line.startswith('#') and '=' in line:
+                                key, value = line.split('=', 1)
+                                os.environ[key.strip()] = value.strip()
+                                print(f"✅ Variable {key.strip()} configurada desde: {config_path}")
+                    print(f"✅ Config cargado desde: {config_path}")
+                    return True
+                except Exception as e:
+                    print(f"⚠️ Error leyendo {config_path}: {e}")
+                    continue
+        
+        if os.getenv('OPENAI_API_KEY'):
+            print("✅ Usando variables de entorno del sistema")
+            return True
+            
+        print("⚠️ No se encontró configuración de API key")
+        print("🔍 Rutas buscadas:")
+        for path in possible_paths:
+            print(f"   - {path} {'✅' if os.path.exists(path) else '❌'}")
+        return False
         
     @classmethod
     def INPUT_TYPES(cls):
@@ -111,6 +150,11 @@ class OpenAI_Simple_Chat:
             if use_env_key:
                 self.api_key = os.getenv("OPENAI_API_KEY")
                 if not self.api_key:
+                    print("❌ Error: OPENAI_API_KEY no encontrada en variables de entorno")
+                    print("💡 Soluciones:")
+                    print("   1. Crear archivo .env en el directorio del custom node")
+                    print("   2. Configurar variable de entorno OPENAI_API_KEY")
+                    print("   3. Verificar que el archivo .env existe y tiene el formato correcto")
                     return ("Error: OPENAI_API_KEY no encontrada en variables de entorno",)
             else:
                 self.api_key = api_key

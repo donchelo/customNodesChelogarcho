@@ -14,7 +14,10 @@ def load_config_file():
         os.path.join(os.path.dirname(__file__), 'config.env'),
         os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.env'),
         os.path.expanduser('~/comfyui_config.env'),
+        '/workspace/ComfyUI/custom_nodes/inputFidelity/config.env',  # Ruta absoluta
     ]
+    
+    print("🔍 Buscando configuración de API key...")
     
     for config_path in possible_paths:
         if os.path.exists(config_path):
@@ -25,6 +28,7 @@ def load_config_file():
                         if line and not line.startswith('#') and '=' in line:
                             key, value = line.split('=', 1)
                             os.environ[key.strip()] = value.strip()
+                            print(f"✅ Variable {key.strip()} configurada desde: {config_path}")
                 print(f"✅ Config cargado desde: {config_path}")
                 return True
             except Exception as e:
@@ -36,7 +40,10 @@ def load_config_file():
         print("✅ Usando variables de entorno del sistema")
         return True
         
-    print("⚠️ No se encontró configuración")
+    print("⚠️ No se encontró configuración de API key")
+    print("🔍 Rutas buscadas:")
+    for path in possible_paths:
+        print(f"   - {path} {'✅' if os.path.exists(path) else '❌'}")
     return False
 
 class OpenAIImageFidelityFashion:
@@ -56,13 +63,18 @@ class OpenAIImageFidelityFashion:
         """Initialize OpenAI client with API key"""
         api_key = os.getenv('OPENAI_API_KEY')
         if not api_key:
-            print("Warning: OPENAI_API_KEY not found in environment variables")
+            print("❌ Error: OPENAI_API_KEY no encontrada en variables de entorno")
+            print("💡 Soluciones:")
+            print("   1. Crear archivo config.env en el directorio del custom node")
+            print("   2. Configurar variable de entorno OPENAI_API_KEY")
+            print("   3. Verificar que el archivo config.env existe y tiene el formato correcto")
             return
         
         try:
             self.client = OpenAI(api_key=api_key)
+            print("✅ Cliente OpenAI inicializado correctamente")
         except Exception as e:
-            print(f"Error initializing OpenAI client: {e}")
+            print(f"❌ Error initializing OpenAI client: {e}")
     
     
     @classmethod
