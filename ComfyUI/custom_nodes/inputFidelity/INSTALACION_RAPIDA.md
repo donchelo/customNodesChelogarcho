@@ -1,70 +1,56 @@
-# 🚀 Instalación Rápida - OpenAI Image Fidelity Fashion Node
+# 🚀 Instalación Rápida - OpenAI Image Fidelity Fashion
+
+## 📋 Requisitos Previos
+- ComfyUI instalado y funcionando
+- Clave API de OpenAI válida
+- Python 3.8+
 
 ## ⚡ Instalación en 3 Pasos
 
-### 1️⃣ Copiar a ComfyUI
-Copia toda esta carpeta `inputFidelity` a:
-```
-ComfyUI/custom_nodes/inputFidelity
-```
-
-### 2️⃣ Instalar Dependencias
-
-**ComfyUI Portable:**
+### 1. Configurar API Key
+Edita el archivo `config.env` en esta carpeta:
 ```bash
-# Desde la carpeta ComfyUI_windows_portable
-python_embeded\python.exe -m pip install -r custom_nodes\inputFidelity\requirements.txt
+# Abre config.env y reemplaza "tu_clave_api_aqui" con tu clave real
+OPENAI_API_KEY=sk-tu_clave_real_aqui
 ```
 
-**ComfyUI Standard:**
+### 2. Instalar Dependencias
 ```bash
-cd ComfyUI/custom_nodes/inputFidelity
-pip install -r requirements.txt
+pip install openai pillow torch numpy
 ```
 
-**O usa el instalador automático:**
-- Ejecuta `instalar.bat` (Windows)
-- Sigue las instrucciones en pantalla
+### 3. Reiniciar ComfyUI
+- Detén ComfyUI si está corriendo
+- Reinicia ComfyUI
+- El nodo aparecerá en la categoría "OpenAI/Fashion"
 
-### 3️⃣ Configurar API Key
+## 🔧 Solución de Problemas
 
-**Opción A - Variable de entorno:**
+### Error: "No image generation calls found in Responses API response"
+**Causa:** Problema con la estructura de la respuesta de la API
+**Solución:** 
+1. Verifica que tu API key sea válida
+2. Asegúrate de tener créditos en tu cuenta de OpenAI
+3. Usa el método "Images API" en lugar de "Responses API"
+
+### Error: "OPENAI_API_KEY no encontrada"
+**Solución:**
+1. Verifica que el archivo `config.env` existe
+2. Asegúrate de que la clave API esté correctamente configurada
+3. Reinicia ComfyUI después de cambiar la configuración
+
+### Error: "Module not found"
+**Solución:**
 ```bash
-set OPENAI_API_KEY=tu_api_key_aqui
+pip install openai pillow torch numpy
 ```
 
-**Opción B - En el nodo:**
-Introduce tu API key directamente en el campo "api_key" del nodo
+## 🎯 Uso Rápido
 
-## ✅ Verificar Instalación
+1. **Cargar imagen** en el nodo "OpenAI Image Fidelity (Fashion)"
+2. **Escribir prompt** describiendo los cambios deseados
+3. **Seleccionar preset** de moda (opcional)
+4. **Ejecutar** el workflow
 
-1. Reinicia ComfyUI
-2. Busca "OpenAI Image Fidelity (Fashion)" en la categoría "OpenAI/Fashion"
-3. Si aparece el nodo, ¡la instalación fue exitosa!
-
-## 📚 Archivos Incluidos
-
-- `openai_image_fidelity_fashion.py` - Código principal del nodo
-- `__init__.py` - Registro del nodo para ComfyUI
-- `requirements.txt` - Dependencias necesarias
-- `README.md` - Documentación completa
-- `PROMPTS_EJEMPLOS.md` - Ejemplos de prompts para moda
-- `example_workflow.json` - Workflow de ejemplo
-- `instalar.bat` - Instalador automático para Windows
-- `INSTALACION_RAPIDA.md` - Este archivo
-
-## 🆘 ¿Problemas?
-
-1. **Error "module not found"**: Reinstala dependencias
-2. **Error "API key"**: Verifica tu API key de OpenAI
-3. **Nodo no aparece**: Reinicia ComfyUI completamente
-
-## 💡 Primer Uso
-
-1. Carga una imagen de moda/ropa
-2. Conecta a "primary_image"
-3. Escribe tu prompt (ej: "Change dress to blue")
-4. Selecciona preset "color_change"
-5. ¡Genera!
-
-¡Listo para crear increíbles ediciones de moda con alta fidelidad! 🎉
+## 📞 Soporte
+Si tienes problemas, revisa los logs de ComfyUI para mensajes de debug detallados.

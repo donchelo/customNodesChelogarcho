@@ -233,16 +233,18 @@ class OpenAIImageFidelityFashion:
                               input_fidelity, quality, size, output_format, background):
         """Edit using OpenAI Responses API - for multi-image scenarios"""
         try:
+            print("🔧 Debug: Preparing Responses API request...")
+            
             # Prepare content array
             content = [
-                {"type": "input_text", "text": prompt}
+                {"type": "text", "text": prompt}
             ]
             
             # Add primary image
             primary_pil = self.tensor_to_pil(primary_image)
             primary_base64 = self.pil_to_base64(primary_pil, "PNG")
             content.append({
-                "type": "input_image",
+                "type": "image_url",
                 "image_url": f"data:image/png;base64,{primary_base64}"
             })
             
@@ -251,27 +253,36 @@ class OpenAIImageFidelityFashion:
                 ref_pil = self.tensor_to_pil(reference_image)
                 ref_base64 = self.pil_to_base64(ref_pil, "PNG")
                 content.append({
-                    "type": "input_image",
+                    "type": "image_url",
                     "image_url": f"data:image/png;base64,{ref_base64}"
                 })
             
-            # Prepare tool parameters
-            tool_params = {"type": "image_generation"}
+            print(f"🔧 Debug: Content prepared with {len(content)} items")
             
+            # Prepare tool parameters - try different formats
+            tool_params = {
+                "type": "image_generation",
+                "image_generation": {}
+            }
+            
+            # Add parameters to image_generation object
             if input_fidelity == "high":
-                tool_params["input_fidelity"] = "high"
+                tool_params["image_generation"]["input_fidelity"] = "high"
             if quality != "auto":
-                tool_params["quality"] = quality
+                tool_params["image_generation"]["quality"] = quality
             if size != "auto":
-                tool_params["size"] = size
+                tool_params["image_generation"]["size"] = size
             if output_format != "auto":
-                tool_params["output_format"] = output_format
+                tool_params["image_generation"]["output_format"] = output_format
             if background != "auto":
-                tool_params["background"] = background
+                tool_params["image_generation"]["background"] = background
+            
+            print(f"🔧 Debug: Tool parameters: {tool_params}")
             
             # Make API call
+            print("🔧 Debug: Making API call...")
             response = client.responses.create(
-                model="gpt-4.1",
+                model="gpt-4o",
                 input=[{
                     "role": "user",
                     "content": content
@@ -279,9 +290,11 @@ class OpenAIImageFidelityFashion:
                 tools=[tool_params]
             )
             
+            print("🔧 Debug: API call completed successfully")
             return response, "responses_api"
             
         except Exception as e:
+            print(f"❌ Debug: Responses API error: {str(e)}")
             raise Exception(f"Responses API error: {str(e)}")
     
     def process_images_api_response(self, response):
@@ -304,27 +317,70 @@ class OpenAIImageFidelityFashion:
     
     def process_responses_api_response(self, response):
         """Process response from Responses API"""
+        print(f"🔍 Debug: Response structure: {type(response)}")
+        print(f"🔍 Debug: Response attributes: {dir(response)}")
+        
         if hasattr(response, 'output') and response.output:
-            # Find image generation calls
-            image_data = [
-                output.result
-                for output in response.output
-                if hasattr(output, 'type') and output.type == "image_generation_call"
-            ]
+            print(f"🔍 Debug: Output length: {len(response.output)}")
+            
+            # Find image generation calls - try different possible structures
+            image_data = None
+            revised_prompt = "Generated via Responses API"
+            
+            for i, output in enumerate(response.output):
+                print(f"🔍 Debug: Output {i} type: {getattr(output, 'type', 'unknown')}")
+                print(f"🔍 Debug: Output {i} attributes: {dir(output)}")
+                
+                # Try different possible structures
+                if hasattr(output, 'type'):
+                    if output.type == "image_generation_call":
+                        if hasattr(output, 'result'):
+                            image_data = output.result
+                            if hasattr(output, 'revised_prompt'):
+                                revised_prompt = output.revised_prompt
+                            break
+                    elif output.type == "image_generation":
+                        if hasattr(output, 'result'):
+                            image_data = output.result
+                            if hasattr(output, 'revised_prompt'):
+                                revised_prompt = output.revised_prompt
+                            break
+                elif hasattr(output, 'image_generation_call'):
+                    # Alternative structure
+                    call_data = output.image_generation_call
+                    if hasattr(call_data, 'result'):
+                        image_data = call_data.result
+                        if hasattr(call_data, 'revised_prompt'):
+                            revised_prompt = call_data.revised_prompt
+                        break
+                elif hasattr(output, 'image_generation'):
+                    # Another alternative structure
+                    gen_data = output.image_generation
+                    if hasattr(gen_data, 'result'):
+                        image_data = gen_data.result
+                        if hasattr(gen_data, 'revised_prompt'):
+                            revised_prompt = gen_data.revised_prompt
+                        break
             
             if image_data:
-                image_base64 = image_data[0]
-                
-                # Try to get revised prompt
-                revised_prompt = "Generated via Responses API"
-                for output in response.output:
-                    if hasattr(output, 'type') and output.type == "image_generation_call":
-                        if hasattr(output, 'revised_prompt'):
-                            revised_prompt = output.revised_prompt
-                        break
-                
-                return image_base64, revised_prompt
+                return image_data, revised_prompt
             else:
+                # Try to find any image data in the response
+                print("🔍 Debug: No image generation calls found, searching for any image data...")
+                
+                # Check if there's direct image data in the response
+                if hasattr(response, 'data') and response.data:
+                    for item in response.data:
+                        if hasattr(item, 'b64_json'):
+                            return item.b64_json, "Generated via Responses API (fallback)"
+                
+                # Check if there's image data in the output
+                for output in response.output:
+                    if hasattr(output, 'b64_json'):
+                        return output.b64_json, "Generated via Responses API (fallback)"
+                    elif hasattr(output, 'image_data'):
+                        return output.image_data, "Generated via Responses API (fallback)"
+                
                 raise Exception("No image generation calls found in Responses API response")
         else:
             raise Exception("No output received from Responses API")

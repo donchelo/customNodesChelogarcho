@@ -1,117 +1,62 @@
 @echo off
-echo ====================================
-echo OpenAI Image Fidelity Fashion Node
-echo Instalador para ComfyUI
-echo ====================================
+echo ========================================
+echo   Instalador OpenAI Image Fidelity
+echo ========================================
 echo.
 
-:: Verificar si estamos en la carpeta correcta
-if not exist "openai_image_fidelity_fashion.py" (
-    echo ERROR: No se encontro el archivo principal del nodo.
-    echo Asegurate de ejecutar este script desde la carpeta del nodo.
-    pause
-    exit /b 1
-)
-
-:: Solicitar ruta de ComfyUI
-set /p COMFYUI_PATH="Introduce la ruta completa de tu instalacion de ComfyUI (ej: C:\ComfyUI): "
-
-:: Verificar que la ruta existe
-if not exist "%COMFYUI_PATH%" (
-    echo ERROR: La ruta especificada no existe.
-    pause
-    exit /b 1
-)
-
-:: Verificar que es una instalacion de ComfyUI valida
-if not exist "%COMFYUI_PATH%\custom_nodes" (
-    echo ERROR: No se encontro la carpeta custom_nodes en la ruta especificada.
-    echo Asegurate de que la ruta apunte a la instalacion de ComfyUI.
-    pause
-    exit /b 1
-)
-
-:: Crear carpeta del nodo
-set NODE_PATH=%COMFYUI_PATH%\custom_nodes\inputFidelity
-echo Creando carpeta del nodo en: %NODE_PATH%
-mkdir "%NODE_PATH%" 2>nul
-
-:: Copiar archivos
-echo Copiando archivos del nodo...
-copy "openai_image_fidelity_fashion.py" "%NODE_PATH%\"
-copy "__init__.py" "%NODE_PATH%\"
-copy "requirements.txt" "%NODE_PATH%\"
-copy "README.md" "%NODE_PATH%\"
-copy "example_workflow.json" "%NODE_PATH%\"
-
-:: Detectar tipo de instalacion de ComfyUI
-if exist "%COMFYUI_PATH%\python_embeded" (
-    echo Detectada instalacion Portable de ComfyUI
-    set PYTHON_PATH=%COMFYUI_PATH%\python_embeded\python.exe
-) else (
-    echo Detectada instalacion Standard de ComfyUI
-    set PYTHON_PATH=python
-)
-
-:: Instalar dependencias
-echo.
-echo Instalando dependencias...
-echo Ejecutando: %PYTHON_PATH% -m pip install -r "%NODE_PATH%\requirements.txt"
-"%PYTHON_PATH%" -m pip install -r "%NODE_PATH%\requirements.txt"
-
+echo 🔍 Verificando Python...
+python --version >nul 2>&1
 if errorlevel 1 (
-    echo.
-    echo ERROR: Hubo un problema instalando las dependencias.
-    echo Intenta instalarlas manualmente con:
-    echo %PYTHON_PATH% -m pip install openai pillow torch numpy
+    echo ❌ Python no encontrado. Instala Python 3.8+ primero.
     pause
     exit /b 1
 )
 
-:: Solicitar API Key
+echo ✅ Python encontrado
 echo.
-echo ====================================
-echo Configuracion de API Key
-echo ====================================
-echo.
-echo Para usar este nodo necesitas una API Key de OpenAI.
-echo Puedes obtenerla en: https://platform.openai.com/api-keys
-echo.
-set /p SETUP_API_KEY="¿Quieres configurar tu API Key ahora? (s/n): "
 
-if /i "%SETUP_API_KEY%"=="s" (
-    set /p API_KEY="Introduce tu API Key de OpenAI: "
-    
-    echo.
-    echo Configurando variable de entorno...
-    setx OPENAI_API_KEY "!API_KEY!"
-    
-    echo.
-    echo IMPORTANTE: Reinicia ComfyUI para que la variable de entorno tenga efecto.
-    echo O puedes introducir la API Key directamente en el nodo.
+echo 📦 Instalando dependencias...
+pip install openai pillow torch numpy
+if errorlevel 1 (
+    echo ❌ Error instalando dependencias
+    pause
+    exit /b 1
+)
+
+echo ✅ Dependencias instaladas
+echo.
+
+echo 🔧 Verificando configuración...
+if not exist "config.env" (
+    echo ⚠️  Archivo config.env no encontrado
+    echo 📝 Creando archivo de configuración...
+    echo # Configuración para OpenAI Image Fidelity Fashion > config.env
+    echo # Copia este archivo y configura tu clave API >> config.env
+    echo. >> config.env
+    echo # Clave API de OpenAI (obtén una en https://platform.openai.com/api-keys) >> config.env
+    echo OPENAI_API_KEY=tu_clave_api_aqui >> config.env
+    echo. >> config.env
+    echo # Configuración por defecto >> config.env
+    echo DEFAULT_INPUT_FIDELITY=high >> config.env
+    echo DEFAULT_QUALITY=high >> config.env
+    echo DEFAULT_SIZE=auto >> config.env
+    echo DEFAULT_OUTPUT_FORMAT=png >> config.env
+    echo DEFAULT_BACKGROUND=auto >> config.env
+    echo ✅ Archivo config.env creado
 ) else (
-    echo.
-    echo Recuerda configurar tu API Key de OpenAI antes de usar el nodo.
-    echo Puedes hacerlo:
-    echo 1. Como variable de entorno: set OPENAI_API_KEY=tu_api_key
-    echo 2. Directamente en el campo "api_key" del nodo
+    echo ✅ Archivo config.env encontrado
 )
 
 echo.
-echo ====================================
-echo Instalacion Completada
-echo ====================================
+echo ========================================
+echo   ✅ Instalación completada
+echo ========================================
 echo.
-echo El nodo ha sido instalado exitosamente en:
-echo %NODE_PATH%
+echo 📋 Próximos pasos:
+echo 1. Edita config.env y agrega tu API key de OpenAI
+echo 2. Reinicia ComfyUI
+echo 3. Busca "OpenAI Image Fidelity (Fashion)" en los nodos
 echo.
-echo Pasos siguientes:
-echo 1. Reinicia ComfyUI
-echo 2. Busca el nodo "OpenAI Image Fidelity (Fashion)" en la categoria "OpenAI/Fashion"
-echo 3. Configura tu API Key si no lo hiciste ya
-echo 4. ¡Disfruta editando imagenes de moda con alta fidelidad!
-echo.
-echo Documentacion completa en: %NODE_PATH%\README.md
-echo Workflow de ejemplo en: %NODE_PATH%\example_workflow.json
+echo 🆘 Si tienes problemas, revisa INSTALACION_RAPIDA.md
 echo.
 pause
