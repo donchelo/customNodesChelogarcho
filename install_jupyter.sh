@@ -55,6 +55,72 @@ if [ "$1" = "--ultra-simple" ]; then
     exit 0
 fi
 
+# Verificar argumentos para instalación de archivos únicos
+if [ "$1" = "--single-files" ]; then
+    echo "📁 Instalación de Archivos Únicos activada..."
+    echo "🚀 Copiando nodos como archivos únicos a ComfyUI..."
+    
+    # Verificar que estamos en el directorio correcto
+    if [ ! -d "nodes" ]; then
+        log_error "❌ No se encontró el directorio 'nodes'. Ejecuta desde el directorio del proyecto."
+        exit 1
+    fi
+    
+    # Verificar que estamos en ComfyUI o encontrar ComfyUI
+    if [ ! -d "custom_nodes" ]; then
+        if [ -d "../ComfyUI/custom_nodes" ]; then
+            COMFYUI_DIR="../ComfyUI"
+        elif [ -d "../../ComfyUI/custom_nodes" ]; then
+            COMFYUI_DIR="../../ComfyUI"
+        else
+            log_error "❌ No se pudo encontrar ComfyUI. Ejecuta desde ComfyUI o desde el directorio del proyecto."
+            exit 1
+        fi
+    else
+        COMFYUI_DIR="."
+    fi
+    
+    # Instalar dependencias
+    pip install --upgrade pip setuptools wheel --quiet
+    pip install -r requirements_all_nodes.txt --quiet --no-cache-dir
+    
+    # Copiar archivos únicos
+    SINGLE_FILES=(
+        "CL_ImageFidelity.py"
+        "CL_VirtualTryOn.py"
+        "CL_GeminiFlash.py"
+        "CL_OpenAIChat.py"
+    )
+    
+    log_info "Copiando archivos únicos a $COMFYUI_DIR/custom_nodes/"
+    for file in "${SINGLE_FILES[@]}"; do
+        if [ -f "nodes/$file" ]; then
+            cp "nodes/$file" "$COMFYUI_DIR/custom_nodes/"
+            log_success "✅ $file copiado"
+        else
+            log_warning "⚠️ $file no encontrado"
+        fi
+    done
+    
+    echo ""
+    echo "=================================================="
+    echo "🎉 ¡Archivos únicos instalados correctamente!"
+    echo ""
+    echo "📋 Archivos copiados:"
+    for file in "${SINGLE_FILES[@]}"; do
+        if [ -f "$COMFYUI_DIR/custom_nodes/$file" ]; then
+            echo "   ✅ $file"
+        fi
+    done
+    echo ""
+    echo "🚀 ComfyUI está listo para usar!"
+    echo "💡 Reinicia ComfyUI para que los cambios surtan efecto"
+    echo "🔍 Busca nodos por 'CL_' o 'chelogarcho' en ComfyUI"
+    echo "🌐 Accede desde: http://proxy/8188/"
+    echo "=================================================="
+    exit 0
+fi
+
 # Verificar que estamos en el directorio correcto
 if [ ! -d "custom_nodes" ]; then
     log_warning "⚠️ No se encontró el directorio 'custom_nodes' en el directorio actual."
@@ -195,8 +261,9 @@ if [ "$INSTALLATION_SUCCESS" = true ]; then
     echo "   - No más archivos de configuración necesarios"
     echo "   - Pega tu API key directamente en cada nodo"
     echo ""
-    echo "⚡ Para instalación ultra-simple en el futuro:"
-    echo "   ./install_jupyter.sh --ultra-simple"
+    echo "⚡ Opciones de instalación disponibles:"
+    echo "   ./install_jupyter.sh --ultra-simple    # Instalación tradicional rápida"
+    echo "   ./install_jupyter.sh --single-files    # Instalación de archivos únicos"
 else
     log_error "❌ Algunos nodos no se instalaron correctamente"
     echo "🔍 Revisa los logs anteriores para más detalles"

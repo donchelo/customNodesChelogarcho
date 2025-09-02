@@ -1,19 +1,47 @@
+"""
+CL_OpenAIChat - OpenAI Simple Chat Node
+Developer: chelogarcho
+Allows integration of OpenAI chat directly in ComfyUI with image analysis capabilities
+
+This is a single-file ComfyUI node that consolidates all functionality.
+Dependencies: openai>=1.0.0, requests>=2.25.0, pillow>=9.0.0, torch>=1.9.0, numpy>=1.21.0, langdetect>=1.0.9
+
+Installation: Copy this file to ComfyUI/custom_nodes/
+Usage: Search for "CL_OpenAIChat" or "chelogarcho" in ComfyUI
+"""
+
 import os
 import json
 import base64
 import io
 import requests
 from typing import Dict, Any, Optional, List
-import openai
-from openai import OpenAI
-from PIL import Image
 import torch
 import numpy as np
-from langdetect import detect, LangDetectException
+from PIL import Image
 
-class OpenAI_Simple_Chat:
+# Try to import required packages, provide helpful error messages if not available
+try:
+    import openai
+    from openai import OpenAI
+except ImportError:
+    raise ImportError(
+        "openai package is required for CL_OpenAIChat node. "
+        "Install with: pip install openai>=1.0.0"
+    )
+
+try:
+    from langdetect import detect, LangDetectException
+except ImportError:
+    raise ImportError(
+        "langdetect package is required for CL_OpenAIChat node. "
+        "Install with: pip install langdetect>=1.0.9"
+    )
+
+
+class CL_OpenAIChat:
     """
-    Nodo para chat con OpenAI usando Responses API
+    Nodo para chat con OpenAI usando Chat Completions API
     Procesa texto + imágenes y devuelve respuestas mejoradas en inglés
     
     Developer: chelogarcho
@@ -58,7 +86,7 @@ class OpenAI_Simple_Chat:
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("response_text",)
     FUNCTION = "process_with_vision"
-    CATEGORY = "AI/Chat"
+    CATEGORY = "chelogarcho/AI Chat"
     
     def image_to_base64(self, image_tensor) -> str:
         """
@@ -76,6 +104,9 @@ class OpenAI_Simple_Chat:
                 image_array = (image_array * 255).astype(np.uint8)
             
             # Asegurar formato correcto (H, W, C)
+            if len(image_array.shape) == 4:
+                image_array = image_array[0]  # Remove batch dimension
+            
             if len(image_array.shape) == 3 and image_array.shape[0] in [1, 3, 4]:
                 image_array = np.transpose(image_array, (1, 2, 0))
             
@@ -115,11 +146,11 @@ class OpenAI_Simple_Chat:
         except Exception:
             return "en"
     
-    def process_with_vision(self, user_prompt: str, model: str, max_characters: int, 
-                           system_prompt: str, api_key: str, image_1=None, image_2=None, 
+    def process_with_vision(self, api_key: str, user_prompt: str, model: str, max_characters: int, 
+                           system_prompt: str, image_1=None, image_2=None, 
                            image_3=None) -> tuple:
         """
-        Procesa texto + imágenes con OpenAI Responses API
+        Procesa texto + imágenes con OpenAI Chat Completions API
         Devuelve respuesta mejorada siempre en inglés
         """
         try:
@@ -157,7 +188,7 @@ class OpenAI_Simple_Chat:
                 except Exception as e:
                     print(f"Error procesando imagen {i+1}: {str(e)}")
             
-            # Realizar llamada a OpenAI Responses API
+            # Realizar llamada a OpenAI Chat Completions API
             response = self.client.chat.completions.create(
                 model=model,
                 messages=[
@@ -201,10 +232,13 @@ class OpenAI_Simple_Chat:
         except Exception as e:
             return (f"Error inesperado: {str(e)}",)
 
-class OpenAI_Conversation_Chat:
+
+class CL_OpenAIConversation:
     """
-    Nodo para chat con conversación persistente usando Responses API
+    Nodo para chat con conversación persistente usando Chat Completions API
     Mantiene el historial de la conversación con soporte para imágenes
+    
+    Developer: chelogarcho
     """
     
     def __init__(self):
@@ -216,25 +250,28 @@ class OpenAI_Conversation_Chat:
     def INPUT_TYPES(cls):
         return {
             "required": {
+                "api_key": ("STRING", {
+                    "multiline": False,
+                    "default": "",
+                    "placeholder": "Enter your OpenAI API key here"
+                }),
                 "user_prompt": ("STRING", {"default": "Enhance this image", "multiline": True}),
                 "model": (["gpt-4o-mini", "gpt-4o", "gpt-4-turbo", "gpt-4"], {"default": "gpt-4o-mini"}),
                 "max_characters": ("INT", {"default": 500, "min": 50, "max": 2000}),
                 "system_prompt": ("STRING", {"default": "You are a helpful assistant that always responds in English. Enhance and improve the user's request with professional terminology.", "multiline": True}),
-                "api_key": ("STRING", {"default": "", "multiline": False}),
+                "clear_history": ("BOOLEAN", {"default": False}),
             },
             "optional": {
                 "image_1": ("IMAGE",),
                 "image_2": ("IMAGE",),
                 "image_3": ("IMAGE",),
-                "use_env_key": ("BOOLEAN", {"default": True}),
-                "clear_history": ("BOOLEAN", {"default": False}),
             }
         }
     
     RETURN_TYPES = ("STRING", "STRING")
     RETURN_NAMES = ("response_text", "conversation_summary")
     FUNCTION = "conversation_with_vision"
-    CATEGORY = "AI/Chat"
+    CATEGORY = "chelogarcho/AI Chat"
     
     def image_to_base64(self, image_tensor) -> str:
         """
@@ -252,6 +289,9 @@ class OpenAI_Conversation_Chat:
                 image_array = (image_array * 255).astype(np.uint8)
             
             # Asegurar formato correcto (H, W, C)
+            if len(image_array.shape) == 4:
+                image_array = image_array[0]  # Remove batch dimension
+                
             if len(image_array.shape) == 3 and image_array.shape[0] in [1, 3, 4]:
                 image_array = np.transpose(image_array, (1, 2, 0))
             
@@ -291,29 +331,19 @@ class OpenAI_Conversation_Chat:
         except Exception:
             return "en"
     
-    def conversation_with_vision(self, user_prompt: str, model: str, max_characters: int, 
-                                system_prompt: str, api_key: str, image_1=None, image_2=None, 
-                                image_3=None, use_env_key: bool = True, clear_history: bool = False) -> tuple:
+    def conversation_with_vision(self, api_key: str, user_prompt: str, model: str, max_characters: int, 
+                                system_prompt: str, clear_history: bool = False, image_1=None, image_2=None, 
+                                image_3=None) -> tuple:
         """
-        Procesa conversación con imágenes usando OpenAI Responses API
+        Procesa conversación con imágenes usando OpenAI Chat Completions API
         """
         try:
             # Limpiar historial si se solicita
             if clear_history:
                 self.conversation_history = []
             
-            # Obtener la clave API
-            if use_env_key:
-                self.api_key = os.getenv("OPENAI_API_KEY")
-                if not self.api_key:
-                    return ("Error: OPENAI_API_KEY no encontrada en variables de entorno", "")
-            else:
-                self.api_key = api_key
-                if not self.api_key:
-                    return ("Error: Clave API requerida", "")
-            
             # Inicializar cliente OpenAI
-            self.client = OpenAI(api_key=self.api_key)
+            self.client = OpenAI(api_key=api_key.strip())
             
             # Detectar idioma del prompt del usuario
             detected_lang = self.detect_language(user_prompt)
@@ -406,13 +436,58 @@ class OpenAI_Conversation_Chat:
         except Exception as e:
             return (f"Error inesperado: {str(e)}", "")
 
-# Nodos disponibles para registro
+
+# Node registration for ComfyUI
 NODE_CLASS_MAPPINGS = {
-    "OpenAI_Simple_Chat": OpenAI_Simple_Chat,
-    "OpenAI_Conversation_Chat": OpenAI_Conversation_Chat,
+    "CL_OpenAIChat": CL_OpenAIChat,
+    "CL_OpenAIConversation": CL_OpenAIConversation,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "OpenAI_Simple_Chat": "OpenAI Simple Chat",
-    "OpenAI_Conversation_Chat": "OpenAI Conversation Chat",
+    "CL_OpenAIChat": "CL OpenAI Chat (by chelogarcho)",
+    "CL_OpenAIConversation": "CL OpenAI Conversation (by chelogarcho)",
 }
+
+# Export for ComfyUI
+__all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
+
+# Dependency information (for documentation)
+DEPENDENCIES = [
+    "openai>=1.0.0",
+    "requests>=2.25.0",
+    "pillow>=9.0.0",
+    "torch>=1.9.0",
+    "numpy>=1.21.0",
+    "langdetect>=1.0.9"
+]
+
+# Installation instructions
+INSTALLATION_INSTRUCTIONS = """
+Installation Instructions for CL_OpenAIChat:
+
+1. Copy this file to: ComfyUI/custom_nodes/CL_OpenAIChat.py
+
+2. Install dependencies:
+   pip install openai>=1.0.0 requests>=2.25.0 pillow>=9.0.0 torch>=1.9.0 numpy>=1.21.0 langdetect>=1.0.9
+
+3. Restart ComfyUI
+
+4. Search for "CL_OpenAIChat" or "chelogarcho" in ComfyUI
+
+5. Get your OpenAI API key from: https://platform.openai.com/api-keys
+
+6. Paste your API key in the "api_key" field of the node
+
+Usage:
+- CL_OpenAIChat: Simple chat with image analysis
+- CL_OpenAIConversation: Chat with conversation history
+
+Features:
+- Multi-language input detection (always responds in English)
+- Support for up to 3 images per request
+- Configurable response length
+- Custom system prompts
+- Multiple OpenAI models supported (gpt-4o-mini, gpt-4o, gpt-4-turbo, gpt-4)
+
+Developer: chelogarcho
+"""

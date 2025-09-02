@@ -37,6 +37,12 @@ install_jupyter.bat
 install_jupyter.bat --ultra-simple
 ```
 
+### **🆕 Opción 4: Archivos Únicos (Nuevo)**
+```bash
+# Instalación usando archivos únicos (como ComfyUI_Fill-Nodes)
+./install_jupyter.sh --single-files
+```
+
 ### **Acceso desde Jupyter:**
 - **URL**: `http://proxy/8188/`
 - **Buscar nodos**: Busca por **"chelogarcho"** en ComfyUI
@@ -45,19 +51,33 @@ install_jupyter.bat --ultra-simple
 
 | Nodo | Función | Tecnología | Caso de Uso |
 |------|---------|------------|--------------|
-| **inputFidelity** | Análisis de fidelidad de imágenes | OpenAI | Moda, productos, e-commerce |
-| **MirrorNode** | Virtual Try-On | YourMirror.io | Ropa, calzado, accesorios |
-| **bananaNode** | Generación/edición de imágenes | Google Gemini 2.5 Flash | Generación creativa, consistencia |
-| **openai_simple_chat** | Chat inteligente | OpenAI GPT | Análisis, prompts, asistencia |
+| **CL_ImageFidelity** | Análisis de fidelidad de imágenes | OpenAI | Moda, productos, e-commerce |
+| **CL_VirtualTryOn** | Virtual Try-On | YourMirror.io | Ropa, calzado, accesorios |
+| **CL_GeminiFlash** | Generación/edición de imágenes | Google Gemini 2.5 Flash | Generación creativa, consistencia |
+| **CL_OpenAIChat** | Chat inteligente | OpenAI GPT | Análisis, prompts, asistencia |
+
+### **📁 Disponible en dos formatos:**
+
+#### **🔧 Estructura Tradicional (custom_nodes/)**
+- `inputFidelity/` - Análisis de fidelidad de imágenes
+- `mirrorNode/` - Virtual Try-On
+- `bananaNode/` - Generación con Gemini
+- `openai_simple_chat/` - Chat con OpenAI
+
+#### **📄 Archivos Únicos (nodes/)**
+- `CL_ImageFidelity.py` - Todo en un archivo
+- `CL_VirtualTryOn.py` - Todo en un archivo  
+- `CL_GeminiFlash.py` - Todo en un archivo
+- `CL_OpenAIChat.py` - Todo en un archivo
 
 ## 🔑 **API Keys Visibles (NUEVO)**
 
 **Todos los nodos tienen campos visibles para las API keys**, eliminando la necesidad de archivos de configuración:
 
-- ✅ **inputFidelity**: Campo `api_key` para OpenAI
-- ✅ **MirrorNode**: Campo `api_key` para YourMirror.io  
-- ✅ **bananaNode**: Campo `api_key` para Google
-- ✅ **openai_simple_chat**: Campo `api_key` para OpenAI
+- ✅ **CL_ImageFidelity**: Campo `api_key` para OpenAI
+- ✅ **CL_VirtualTryOn**: Campo `api_key` para YourMirror.io  
+- ✅ **CL_GeminiFlash**: Campo `api_key` para Google
+- ✅ **CL_OpenAIChat**: Campo `api_key` para OpenAI
 
 ### **Cómo usar:**
 1. **Arrastrar nodo** al canvas
@@ -138,7 +158,12 @@ python test_nodes.py
 ```
 customNodesChelogarcho/
 ├── install_jupyter.sh           # 🚀 INSTALADOR ÚNICO para Jupyter/Vast.ai
-├── custom_nodes/                # Custom nodes desarrollados por chelogarcho
+├── nodes/                       # 🆕 Archivos únicos (como ComfyUI_Fill-Nodes)
+│   ├── CL_ImageFidelity.py     # OpenAI Image Analysis (archivo único)
+│   ├── CL_VirtualTryOn.py      # Virtual Try-On (archivo único)
+│   ├── CL_GeminiFlash.py       # Gemini Flash Image (archivo único)
+│   └── CL_OpenAIChat.py        # AI Chat Integration (archivo único)
+├── custom_nodes/                # Estructura tradicional (mantenida)
 │   ├── inputFidelity/          # OpenAI Image Analysis
 │   ├── mirrorNode/             # Virtual Try-On
 │   ├── bananaNode/             # Gemini Flash Image
@@ -161,14 +186,15 @@ customNodesChelogarcho/
 
 ```bash
 git pull origin main
-./install_jupyter.sh
-# O para actualización rápida:
-./install_jupyter.sh --ultra-simple
+
+# Opciones de actualización:
+./install_jupyter.sh                    # Instalación tradicional completa
+./install_jupyter.sh --ultra-simple     # Instalación tradicional rápida
+./install_jupyter.sh --single-files     # Actualizar archivos únicos
 
 # Para Windows:
-install_jupyter.bat
-# O para actualización rápida:
-install_jupyter.bat --ultra-simple
+install_jupyter.bat                     # Instalación tradicional
+install_jupyter.bat --ultra-simple     # Instalación rápida
 ```
 
 ## 🤝 **Soporte**
