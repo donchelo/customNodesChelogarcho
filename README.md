@@ -8,21 +8,33 @@ Una colección completa de nodos personalizados para ComfyUI que extienden las c
 
 ### **Opción 1: Una sola línea (Recomendada)**
 ```bash
-curl -sSL https://raw.githubusercontent.com/chelogarcho/customNodesChelogarcho/main/install_jupyter.sh | bash
+curl -sSL https://raw.githubusercontent.com/donchelo/customNodesChelogarcho/main/install_jupyter.sh | bash
 ```
 
 ### **Opción 2: Descargar y ejecutar**
 ```bash
 cd ComfyUI/custom_nodes/
-git clone https://github.com/chelogarcho/customNodesChelogarcho.git
+git clone https://github.com/donchelo/customNodesChelogarcho.git
 cd customNodesChelogarcho
 chmod +x install_jupyter.sh
 ./install_jupyter.sh
 ```
 
+### **Opción 2.1: Para Windows**
+```cmd
+cd ComfyUI\custom_nodes\
+git clone https://github.com/donchelo/customNodesChelogarcho.git
+cd customNodesChelogarcho
+install_jupyter.bat
+```
+
 ### **Opción 3: Instalación Ultra-Simple**
 ```bash
+# Linux/Mac
 ./install_jupyter.sh --ultra-simple
+
+# Windows
+install_jupyter.bat --ultra-simple
 ```
 
 ### **Acceso desde Jupyter:**
@@ -152,6 +164,11 @@ git pull origin main
 ./install_jupyter.sh
 # O para actualización rápida:
 ./install_jupyter.sh --ultra-simple
+
+# Para Windows:
+install_jupyter.bat
+# O para actualización rápida:
+install_jupyter.bat --ultra-simple
 ```
 
 ## 🤝 **Soporte**

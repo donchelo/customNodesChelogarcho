@@ -57,8 +57,28 @@ fi
 
 # Verificar que estamos en el directorio correcto
 if [ ! -d "custom_nodes" ]; then
-    log_error "No se encontró el directorio 'custom_nodes'. Ejecuta este script desde la raíz de ComfyUI."
-    exit 1
+    log_warning "⚠️ No se encontró el directorio 'custom_nodes' en el directorio actual."
+    log_info "Verificando si estamos en el directorio correcto..."
+    
+    # Si estamos en el directorio del proyecto, cambiar a ComfyUI
+    if [ -d "install_jupyter.sh" ] && [ -d "requirements_all_nodes.txt" ]; then
+        log_info "Parece que estamos en el directorio del proyecto. Buscando ComfyUI..."
+        
+        # Buscar ComfyUI en directorios padre
+        if [ -d "../ComfyUI" ]; then
+            log_info "Encontrado ComfyUI en directorio padre. Cambiando..."
+            cd ../ComfyUI
+        elif [ -d "../../ComfyUI" ]; then
+            log_info "Encontrado ComfyUI en directorio padre del padre. Cambiando..."
+            cd ../../ComfyUI
+        else
+            log_error "No se pudo encontrar ComfyUI. Ejecuta este script desde la raíz de ComfyUI o desde el directorio del proyecto."
+            exit 1
+        fi
+    else
+        log_error "No se encontró el directorio 'custom_nodes'. Ejecuta este script desde la raíz de ComfyUI."
+        exit 1
+    fi
 fi
 
 # Verificar Python

@@ -26,17 +26,16 @@ google-generativeai>=0.8.0
 
 # ===== openai_simple_chat Node =====
 # OpenAI API para chat y procesamiento de imágenes
-openai>=1.0.0
+# openai ya está incluido arriba
 langdetect>=1.0.9
 
 # ===== Dependencias Comunes =====
 # Procesamiento de imágenes
 Pillow>=9.0.0
-PIL>=9.0.0
+# PIL es parte de Pillow, no necesitamos instalarlo por separado
 
 # Machine Learning y procesamiento numérico
-torch>=1.9.0
-numpy>=1.21.0
+# torch y numpy ya están incluidos en ComfyUI base
 
 # Utilidades adicionales
 typing-extensions>=4.0.0

@@ -86,8 +86,7 @@ def test_config_files():
     config_files = [
         'config.env.example',
         'requirements_all_nodes.txt',
-        'install_all_nodes.sh',
-        'install_all_nodes.bat'
+        'install_jupyter.sh'
     ]
     
     success = True
