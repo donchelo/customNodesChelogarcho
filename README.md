@@ -4,6 +4,9 @@
 
 Una colección completa de nodos personalizados para ComfyUI que extienden las capacidades de generación y procesamiento de imágenes con IA, **optimizada para entornos Vast.ai y uso local**.
 
+> 🆕 **NUEVO: Refactorización completa a archivos únicos**  
+> Todos los nodos están ahora consolidados en archivos Python individuales para máxima simplicidad, inspirado en ComfyUI_Fill-Nodes.
+
 ## 🌟 **Instalación Rápida para Jupyter/Vast.ai**
 
 ### **Opción 1: Una sola línea (Recomendada)**
@@ -37,10 +40,13 @@ install_jupyter.bat
 install_jupyter.bat --ultra-simple
 ```
 
-### **🆕 Opción 4: Archivos Únicos (Nuevo)**
+### **🚀 Opción Principal: Archivos Únicos (Recomendada)**
 ```bash
 # Instalación usando archivos únicos (como ComfyUI_Fill-Nodes)
 ./install_jupyter.sh --single-files
+
+# Para Windows:
+install_jupyter.bat --single-files
 ```
 
 ### **Acceso desde Jupyter:**
@@ -56,19 +62,19 @@ install_jupyter.bat --ultra-simple
 | **CL_GeminiFlash** | Generación/edición de imágenes | Google Gemini 2.5 Flash | Generación creativa, consistencia |
 | **CL_OpenAIChat** | Chat inteligente | OpenAI GPT | Análisis, prompts, asistencia |
 
-### **📁 Disponible en dos formatos:**
+### **📁 Formato Principal (Archivos Únicos)**
 
-#### **🔧 Estructura Tradicional (custom_nodes/)**
-- `inputFidelity/` - Análisis de fidelidad de imágenes
-- `mirrorNode/` - Virtual Try-On
-- `bananaNode/` - Generación con Gemini
-- `openai_simple_chat/` - Chat con OpenAI
+**Todos los nodos están consolidados en archivos únicos para máxima simplicidad:**
 
-#### **📄 Archivos Únicos (nodes/)**
-- `CL_ImageFidelity.py` - Todo en un archivo
-- `CL_VirtualTryOn.py` - Todo en un archivo  
-- `CL_GeminiFlash.py` - Todo en un archivo
-- `CL_OpenAIChat.py` - Todo en un archivo
+- `CL_ImageFidelity.py` - OpenAI Image Analysis (todo en un archivo)
+- `CL_VirtualTryOn.py` - Virtual Try-On (todo en un archivo)  
+- `CL_GeminiFlash.py` - Gemini Flash Image (todo en un archivo)
+- `CL_OpenAIChat.py` - AI Chat Integration (todo en un archivo)
+
+**Instalación ultra-simple:**
+```bash
+./install_jupyter.sh --single-files
+```
 
 ## 🔑 **API Keys Visibles (NUEVO)**
 
@@ -89,12 +95,12 @@ install_jupyter.bat --ultra-simple
 
 ### **Moda y E-commerce:**
 ```bash
-inputFidelity + MirrorNode = Análisis de productos + Try-on virtual
+CL_ImageFidelity + CL_VirtualTryOn = Análisis de productos + Try-on virtual
 ```
 
 ### **Generación Creativa:**
 ```bash
-bananaNode + openai_simple_chat = Generación de imágenes + Análisis con IA
+CL_GeminiFlash + CL_OpenAIChat = Generación de imágenes + Análisis con IA
 ```
 
 ### **Workflow Completo:**
@@ -106,13 +112,13 @@ combined_workflow_example.json = Pipeline completo de análisis a resultado fina
 
 ### **Obtener API Keys:**
 ```bash
-# OpenAI (inputFidelity + openai_simple_chat)
+# OpenAI (CL_ImageFidelity + CL_OpenAIChat)
 https://platform.openai.com/api-keys
 
-# Google (bananaNode)
+# Google (CL_GeminiFlash)
 https://aistudio.google.com/app/apikey
 
-# YourMirror.io (MirrorNode)
+# YourMirror.io (CL_VirtualTryOn)
 https://yourmirror.io/
 ```
 
@@ -143,9 +149,11 @@ https://yourmirror.io/
 
 ### **Error: "Module not found"**
 ```bash
-./install_jupyter.sh  # Reinstalar dependencias
-# O para instalación rápida:
-./install_jupyter.sh --ultra-simple
+# Reinstalar dependencias (archivos únicos):
+./install_jupyter.sh --single-files
+
+# Para Windows:
+install_jupyter.bat --single-files
 ```
 
 ### **Verificar instalación:**
@@ -158,20 +166,17 @@ python test_nodes.py
 ```
 customNodesChelogarcho/
 ├── install_jupyter.sh           # 🚀 INSTALADOR ÚNICO para Jupyter/Vast.ai
-├── nodes/                       # 🆕 Archivos únicos (como ComfyUI_Fill-Nodes)
+├── nodes/                       # 🆕 ARCHIVOS ÚNICOS (como ComfyUI_Fill-Nodes)
 │   ├── CL_ImageFidelity.py     # OpenAI Image Analysis (archivo único)
 │   ├── CL_VirtualTryOn.py      # Virtual Try-On (archivo único)
 │   ├── CL_GeminiFlash.py       # Gemini Flash Image (archivo único)
 │   └── CL_OpenAIChat.py        # AI Chat Integration (archivo único)
-├── custom_nodes/                # Estructura tradicional (mantenida)
-│   ├── inputFidelity/          # OpenAI Image Analysis
-│   ├── mirrorNode/             # Virtual Try-On
-│   ├── bananaNode/             # Gemini Flash Image
-│   └── openai_simple_chat/     # AI Chat Integration
 ├── workflows_examples/          # Ejemplos de workflows para cada nodo
 ├── config.env.example           # Configuración de ejemplo (opcional)
 ├── requirements_all_nodes.txt   # Dependencias unificadas
-└── test_nodes.py                # Testing
+├── test_nodes.py                # Testing
+├── cleanup_old_structure.bat    # Limpieza para Windows
+└── cleanup_old_structure.sh     # Limpieza para Linux/Mac
 ```
 
 ## 🌐 **Optimizado para Vast.ai**
@@ -187,14 +192,14 @@ customNodesChelogarcho/
 ```bash
 git pull origin main
 
-# Opciones de actualización:
-./install_jupyter.sh                    # Instalación tradicional completa
-./install_jupyter.sh --ultra-simple     # Instalación tradicional rápida
-./install_jupyter.sh --single-files     # Actualizar archivos únicos
+# Actualizar archivos únicos (recomendado):
+./install_jupyter.sh --single-files
 
 # Para Windows:
-install_jupyter.bat                     # Instalación tradicional
-install_jupyter.bat --ultra-simple     # Instalación rápida
+install_jupyter.bat --single-files
+
+# Nota: La estructura antigua ya no está disponible
+# Todos los nodos están consolidados en archivos únicos
 ```
 
 ## 🤝 **Soporte**
