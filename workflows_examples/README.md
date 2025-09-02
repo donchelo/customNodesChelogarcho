@@ -6,23 +6,23 @@ Esta carpeta contiene ejemplos de workflows para cada custom node, mostrando có
 
 ## 🎯 Workflows Individuales
 
-### 1. **inputFidelity_example.json**
-- **Nodo**: OpenAI Image Fidelity Fashion
+### 1. **CL_ImageFidelity_example.json**
+- **Nodo**: CL_ImageFidelity (OpenAI Image Fidelity Fashion)
 - **Funcionalidad**: Cambio de color de outfit preservando detalles
 - **Uso**: Cargar imagen de moda → Aplicar cambios → Guardar resultado
 
-### 2. **mirrorNode_example.json**
-- **Nodo**: YourMirror Virtual Try-On
+### 2. **CL_VirtualTryOn_example.json**
+- **Nodo**: CL_VirtualTryOn (YourMirror Virtual Try-On)
 - **Funcionalidad**: Probar gafas virtualmente
 - **Uso**: Cargar imagen de persona + producto → Aplicar try-on → Guardar resultado
 
-### 3. **bananaNode_example.json**
-- **Nodo**: Gemini Flash Image
+### 3. **CL_GeminiFlash_example.json**
+- **Nodo**: CL_GeminiFlash (Google Gemini Flash Image)
 - **Funcionalidad**: Generación de paisajes con Gemini
 - **Uso**: Escribir prompt → Generar imagen → Guardar resultado
 
-### 4. **openai_simple_chat_example.json**
-- **Nodo**: OpenAI Simple Chat
+### 4. **CL_OpenAIChat_example.json**
+- **Nodo**: CL_OpenAIChat (OpenAI Simple Chat)
 - **Funcionalidad**: Análisis de imagen de moda
 - **Uso**: Cargar imagen → Analizar con IA → Guardar análisis
 
@@ -61,11 +61,11 @@ Esta carpeta contiene ejemplos de workflows para cada custom node, mostrando có
 ## 🎨 Casos de Uso Recomendados
 
 ### **Moda y E-commerce**
-- `inputFidelity_example.json` + `mirrorNode_example.json`
+- `CL_ImageFidelity_example.json` + `CL_VirtualTryOn_example.json`
 - Análisis de productos + Try-on virtual
 
 ### **Generación Creativa**
-- `bananaNode_example.json` + `openai_simple_chat_example.json`
+- `CL_GeminiFlash_example.json` + `CL_OpenAIChat_example.json`
 - Generación de imágenes + Análisis con IA
 
 ### **Workflow Completo**

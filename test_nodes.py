@@ -15,25 +15,20 @@ def test_node_import(node_name, module_path):
     try:
         print(f"🔍 Probando {node_name}...")
         
-        # Verificar que el directorio existe
+        # Verificar que el archivo existe
         if not os.path.exists(module_path):
-            print(f"❌ {node_name}: Directorio no encontrado en {module_path}")
+            print(f"❌ {node_name}: Archivo no encontrado en {module_path}")
             return False
         
-        # Verificar archivo __init__.py
-        init_file = os.path.join(module_path, "__init__.py")
-        if not os.path.exists(init_file):
-            print(f"❌ {node_name}: __init__.py no encontrado")
+        # Verificar que sea un archivo Python
+        if not module_path.endswith('.py'):
+            print(f"❌ {node_name}: No es un archivo Python")
             return False
-        
-        # Verificar requirements.txt
-        req_file = os.path.join(module_path, "requirements.txt")
-        if not os.path.exists(req_file):
-            print(f"⚠️ {node_name}: requirements.txt no encontrado")
         
         # Intentar importar el módulo
         sys.path.insert(0, os.path.dirname(module_path))
-        module = importlib.import_module(os.path.basename(module_path))
+        module_name = os.path.basename(module_path).replace('.py', '')
+        module = importlib.import_module(module_name)
         
         # Verificar que tenga las variables necesarias
         if hasattr(module, 'NODE_CLASS_MAPPINGS'):
@@ -107,17 +102,17 @@ def main():
     print("=" * 50)
     
     # Verificar que estamos en el directorio correcto
-    if not os.path.exists("custom_nodes"):
-        print("❌ Error: No se encontró el directorio 'custom_nodes'")
-        print("   Ejecuta este script desde la raíz de ComfyUI")
+    if not os.path.exists("nodes"):
+        print("❌ Error: No se encontró el directorio 'nodes'")
+        print("   Ejecuta este script desde la raíz del proyecto")
         return False
     
-    # Lista de nodos a probar
+    # Lista de nodos a probar (archivos únicos)
     nodes_to_test = [
-        ("inputFidelity", "custom_nodes/inputFidelity"),
-        ("mirrorNode", "custom_nodes/mirrorNode"),
-        ("bananaNode", "custom_nodes/bananaNode"),
-        ("openai_simple_chat", "custom_nodes/openai_simple_chat")
+        ("CL_ImageFidelity", "nodes/CL_ImageFidelity.py"),
+        ("CL_VirtualTryOn", "nodes/CL_VirtualTryOn.py"),
+        ("CL_GeminiFlash", "nodes/CL_GeminiFlash.py"),
+        ("CL_OpenAIChat", "nodes/CL_OpenAIChat.py")
     ]
     
     print(f"\n📋 Probando {len(nodes_to_test)} custom nodes...")

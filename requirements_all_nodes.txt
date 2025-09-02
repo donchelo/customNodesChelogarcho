@@ -3,28 +3,28 @@
 # Este archivo contiene todas las dependencias necesarias para todos los custom nodes
 # 
 # Custom Nodes incluidos:
-# - inputFidelity: OpenAI Image Analysis (by chelogarcho)
-# - mirrorNode: YourMirror Virtual Try-On (by chelogarcho)
-# - bananaNode: Gemini Flash Image (by chelogarcho)
-# - openai_simple_chat: AI Chat Integration (by chelogarcho)
+# - CL_ImageFidelity: OpenAI Image Analysis (by chelogarcho)
+# - CL_VirtualTryOn: YourMirror Virtual Try-On (by chelogarcho)
+# - CL_GeminiFlash: Gemini Flash Image (by chelogarcho)
+# - CL_OpenAIChat: AI Chat Integration (by chelogarcho)
 
 # Dependencias del sistema
 setuptools>=65.0.0
 wheel>=0.37.0
 
-# ===== inputFidelity Node =====
+# ===== CL_ImageFidelity Node =====
 # OpenAI API para análisis de fidelidad de imágenes
 openai>=1.12.0
 
-# ===== mirrorNode Node =====
+# ===== CL_VirtualTryOn Node =====
 # API calls y procesamiento de imágenes
 requests>=2.28.0
 
-# ===== bananaNode Node =====
+# ===== CL_GeminiFlash Node =====
 # Google Generative AI para Gemini Flash Image
 google-generativeai>=0.8.0
 
-# ===== openai_simple_chat Node =====
+# ===== CL_OpenAIChat Node =====
 # OpenAI API para chat y procesamiento de imágenes
 # openai ya está incluido arriba
 langdetect>=1.0.9
