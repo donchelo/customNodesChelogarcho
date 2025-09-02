@@ -80,7 +80,7 @@ class CL_ImageFidelity:
                     "style_transfer",
                     "background_change"
                 ], {"default": "custom"}),
-                "api_method": (["images_api", "responses_api"], {"default": "images_api"}),
+                "api_method": (["responses_api", "images_api"], {"default": "responses_api"}),
             },
 
             "optional": {
