@@ -1,175 +1,119 @@
-# 🚀 ComfyUI Custom Nodes Collection
+# 🚀 ComfyUI Custom Nodes Collection - by chelogarcho
 
 **Desarrollado por: chelogarcho** 🎨
 
-Una colección completa de nodos personalizados para ComfyUI que extienden las capacidades de generación y procesamiento de imágenes con IA, optimizada para entornos Vast.ai y uso local.
+Una colección completa de nodos personalizados para ComfyUI que extienden las capacidades de generación y procesamiento de imágenes con IA, **optimizada para entornos Vast.ai y uso local**.
 
-## 🌟 Características Principales
+## 🌟 **Instalación Rápida para Jupyter/Vast.ai**
 
-- **4 Custom Nodes Especializados** desarrollados por chelogarcho
-- **Instalación Automática** con scripts para Windows y Linux/macOS
-- **Configuración Simplificada** con archivos de ejemplo
-- **Workflows de Ejemplo** listos para usar
-- **Documentación Completa** para cada nodo
-- **Optimizado para Vast.ai** con soporte para `/proxy/8188/`
-
-## 📋 Custom Nodes Incluidos
-
-### 🎯 **inputFidelity** - OpenAI Image Analysis
-**Análisis de fidelidad de imágenes con OpenAI**
-- Alta fidelidad de entrada para preservar detalles finos
-- Presets especializados para moda y fotografía de productos
-- Soporte para máscaras y múltiples imágenes de referencia
-- Fondos transparentes para e-commerce
-
-### 🔄 **MirrorNode** - Virtual Try-On
-**Integración con YourMirror.io para probadores virtuales**
-- Soporte para ropa, calzado y accesorios
-- Calidad normal y alta con reintentos automáticos
-- Sistema de logging detallado para debugging
-- API robusta con manejo de errores
-
-### 🍌 **bananaNode** - Gemini Flash Image
-**Generación y edición con Google Gemini 2.5 Flash**
-- Múltiples modos de operación (generación, edición, fusión)
-- Consistencia de personajes y conocimiento del mundo real
-- Fusión multi-imagen para resultados complejos
-- Control granular sobre la generación
-
-### 💬 **openai_simple_chat** - AI Chat Integration
-**Chat inteligente con OpenAI integrado en ComfyUI**
-- Soporte para múltiples modelos GPT
-- Procesamiento de imágenes con visión
-- Respuestas en inglés mejoradas
-- Control de longitud de respuesta
-
-## 🚀 Instalación Rápida
-
-### **Opción 1: Instalación Automática (Recomendada)**
-
-#### Linux/macOS:
+### **Opción 1: Una sola línea (Recomendada)**
 ```bash
-chmod +x install_all_nodes.sh
-./install_all_nodes.sh
+curl -sSL https://raw.githubusercontent.com/chelogarcho/customNodesChelogarcho/main/install_jupyter.sh | bash
 ```
 
-#### Windows:
-```cmd
-install_all_nodes.bat
-```
-
-### **Opción 2: Instalación Manual**
+### **Opción 2: Descargar y ejecutar**
 ```bash
-pip install -r requirements_all_nodes.txt
+cd ComfyUI/custom_nodes/
+git clone https://github.com/chelogarcho/customNodesChelogarcho.git
+cd customNodesChelogarcho
+chmod +x install_jupyter.sh
+./install_jupyter.sh
 ```
 
-## ⚙️ Configuración
-
-### **1. Copiar archivo de configuración:**
+### **Opción 3: Instalación Ultra-Simple**
 ```bash
-cp config.env.example config.env
+./install_jupyter.sh --ultra-simple
 ```
 
-### **2. Configurar API keys en `config.env`:**
-```bash
-# OpenAI (para inputFidelity y openai_simple_chat)
-OPENAI_API_KEY=tu_api_key_aqui
+### **Acceso desde Jupyter:**
+- **URL**: `http://proxy/8188/`
+- **Buscar nodos**: Busca por **"chelogarcho"** en ComfyUI
 
-# Google (para bananaNode)
-GOOGLE_API_KEY=tu_api_key_aqui
+## 📋 **Custom Nodes Incluidos**
 
-# YourMirror.io (para MirrorNode)
-YOURMIRROR_API_KEY=tu_api_key_aqui
-```
+| Nodo | Función | Tecnología | Caso de Uso |
+|------|---------|------------|--------------|
+| **inputFidelity** | Análisis de fidelidad de imágenes | OpenAI | Moda, productos, e-commerce |
+| **MirrorNode** | Virtual Try-On | YourMirror.io | Ropa, calzado, accesorios |
+| **bananaNode** | Generación/edición de imágenes | Google Gemini 2.5 Flash | Generación creativa, consistencia |
+| **openai_simple_chat** | Chat inteligente | OpenAI GPT | Análisis, prompts, asistencia |
 
-### **3. Reiniciar ComfyUI**
+## 🔑 **API Keys Visibles (NUEVO)**
 
-## 📁 Estructura del Proyecto
+**Todos los nodos tienen campos visibles para las API keys**, eliminando la necesidad de archivos de configuración:
 
-```
-customNodesChelogarcho/
-├── custom_nodes/                    # Custom nodes desarrollados por chelogarcho
-│   ├── inputFidelity/              # OpenAI Image Analysis
-│   │   ├── openai_image_fidelity_fashion.py
-│   │   ├── requirements.txt
-│   │   └── README.md
-│   ├── mirrorNode/                 # Virtual Try-On
-│   │   ├── mirror_node.py
-│   │   ├── requirements.txt
-│   │   └── README.md
-│   ├── bananaNode/                 # Gemini Flash Image
-│   │   ├── gemini_flash_image.py
-│   │   ├── requirements.txt
-│   │   └── README.md
-│   └── openai_simple_chat/         # AI Chat Integration
-│       ├── openai_simple_chat.py
-│       ├── requirements.txt
-│       └── README.md
-├── workflows_examples/              # Ejemplos de workflows para cada nodo
-│   ├── inputFidelity_example.json
-│   ├── mirrorNode_example.json
-│   ├── bananaNode_example.json
-│   ├── openai_simple_chat_example.json
-│   └── combined_workflow_example.json
-├── install_all_nodes.sh            # Script de instalación para Linux/macOS
-├── install_all_nodes.bat           # Script de instalación para Windows
-├── install_custom_nodes.sh         # Script alternativo de instalación
-├── requirements_all_nodes.txt      # Dependencias unificadas
-├── config.env.example              # Configuración de ejemplo
-├── CUSTOM_NODES_INDEX.md           # Índice completo de custom nodes
-├── README_CUSTOM_NODES.md          # Documentación técnica detallada
-└── test_nodes.py                   # Script de prueba para verificar instalación
-```
+- ✅ **inputFidelity**: Campo `api_key` para OpenAI
+- ✅ **MirrorNode**: Campo `api_key` para YourMirror.io  
+- ✅ **bananaNode**: Campo `api_key` para Google
+- ✅ **openai_simple_chat**: Campo `api_key` para OpenAI
 
-## 🔧 Uso
+### **Cómo usar:**
+1. **Arrastrar nodo** al canvas
+2. **Hacer clic en campo `api_key`**
+3. **Pegar tu API key**
+4. **Ejecutar workflow**
 
-### **1. Ejecutar ComfyUI:**
-```bash
-python main.py
-```
-
-### **2. Acceder a la interfaz web:**
-- **Local**: http://localhost:8188
-- **Vast.ai**: http://proxy/8188/
-
-### **3. Encontrar los custom nodes:**
-- Hacer clic derecho en el canvas
-- Buscar por **"chelogarcho"** para encontrar todos los nodos
-- O buscar por el nombre específico del nodo
-
-## 📚 Documentación
-
-- **[CUSTOM_NODES_INDEX.md](CUSTOM_NODES_INDEX.md)**: Índice completo y búsqueda de custom nodes
-- **[README_CUSTOM_NODES.md](README_CUSTOM_NODES.md)**: Documentación técnica detallada
-- **workflows_examples/**: Ejemplos de workflows para cada nodo
-- **custom_nodes/*/README.md**: Documentación específica de cada nodo
-
-## 🎯 Casos de Uso Recomendados
+## 🎯 **Casos de Uso Recomendados**
 
 ### **Moda y E-commerce:**
-- `inputFidelity` + `MirrorNode` = Análisis de productos + Try-on virtual
+```bash
+inputFidelity + MirrorNode = Análisis de productos + Try-on virtual
+```
 
 ### **Generación Creativa:**
-- `bananaNode` + `openai_simple_chat` = Generación de imágenes + Análisis con IA
+```bash
+bananaNode + openai_simple_chat = Generación de imágenes + Análisis con IA
+```
 
 ### **Workflow Completo:**
-- `combined_workflow_example.json` = Pipeline completo de análisis a resultado final
+```bash
+combined_workflow_example.json = Pipeline completo de análisis a resultado final
+```
 
-## 🐛 Solución de Problemas
+## ⚙️ **Configuración de API Keys**
+
+### **Obtener API Keys:**
+```bash
+# OpenAI (inputFidelity + openai_simple_chat)
+https://platform.openai.com/api-keys
+
+# Google (bananaNode)
+https://aistudio.google.com/app/apikey
+
+# YourMirror.io (MirrorNode)
+https://yourmirror.io/
+```
+
+### **No más archivos config.env:**
+- **Eliminar** archivos `config.env`
+- **Usar** campos `api_key` en los nodos
+- **Funciona inmediatamente** sin reiniciar ComfyUI
+
+## 🔧 **Uso en ComfyUI**
+
+### **1. Buscar nodos:**
+- Clic derecho en canvas → Buscar **"chelogarcho"**
+- O buscar por nombre específico del nodo
+
+### **2. Configurar API keys:**
+- **Pegar API key** en el campo `api_key` del nodo
+- **No compartir** workflows con API keys incluidas
+
+### **3. Ejemplos incluidos:**
+- `workflows_examples/` - Workflows listos para usar
+- `combined_workflow_example.json` - Pipeline completo
+
+## 🐛 **Solución de Problemas**
+
+### **Error: "API Key is required"**
+- **Solución**: Asegúrate de que el campo `api_key` no esté vacío
+- **Verificar**: El campo debe tener tu API key real
 
 ### **Error: "Module not found"**
 ```bash
-pip install -r requirements_all_nodes.txt
-```
-
-### **Error: "API key not found"**
-- Verificar archivo `config.env`
-- Configurar variables de entorno
-- Revisar documentación específica de cada nodo
-
-### **Error: "Permission denied" en script**
-```bash
-chmod +x install_all_nodes.sh
+./install_jupyter.sh  # Reinstalar dependencias
+# O para instalación rápida:
+./install_jupyter.sh --ultra-simple
 ```
 
 ### **Verificar instalación:**
@@ -177,41 +121,47 @@ chmod +x install_all_nodes.sh
 python test_nodes.py
 ```
 
-## 🔄 Actualización
+## 📁 **Estructura del Proyecto**
 
-Para actualizar a la última versión:
+```
+customNodesChelogarcho/
+├── install_jupyter.sh           # 🚀 INSTALADOR ÚNICO para Jupyter/Vast.ai
+├── custom_nodes/                # Custom nodes desarrollados por chelogarcho
+│   ├── inputFidelity/          # OpenAI Image Analysis
+│   ├── mirrorNode/             # Virtual Try-On
+│   ├── bananaNode/             # Gemini Flash Image
+│   └── openai_simple_chat/     # AI Chat Integration
+├── workflows_examples/          # Ejemplos de workflows para cada nodo
+├── config.env.example           # Configuración de ejemplo (opcional)
+├── requirements_all_nodes.txt   # Dependencias unificadas
+└── test_nodes.py                # Testing
+```
+
+## 🌐 **Optimizado para Vast.ai**
+
+- **Acceso**: `http://proxy/8188/`
+- **Instalación automática** con un solo comando
+- **API keys visibles** en cada nodo
+- **No más configuración** complicada
+- **Funciona inmediatamente** después de la instalación
+
+## 🔄 **Actualización**
 
 ```bash
 git pull origin main
-./install_all_nodes.sh
+./install_jupyter.sh
+# O para actualización rápida:
+./install_jupyter.sh --ultra-simple
 ```
 
-## 🌐 Soporte para Vast.ai
+## 🤝 **Soporte**
 
-Este proyecto está optimizado para entornos Vast.ai con Jupyter:
-
-- **Acceso**: http://proxy/8188/
-- **Instalación automática** con scripts incluidos
-- **Configuración simplificada** para despliegues rápidos
-- **Dependencias unificadas** para evitar conflictos
-
-## 🤝 Contribuciones
-
-Este proyecto es desarrollado por **chelogarcho**. Para contribuciones o reportes de bugs, por favor contacta al desarrollador.
-
-## 📄 Licencia
-
-ComfyUI tiene su propia licencia. Los custom nodes están desarrollados por chelogarcho.
-
-## 🔗 Enlaces Útiles
-
-- [ComfyUI Official](https://github.com/comfyanonymous/ComfyUI)
-- [OpenAI API](https://platform.openai.com/)
-- [Google AI Studio](https://aistudio.google.com/)
-- [YourMirror.io](https://yourmirror.io/)
+- **Desarrollador**: chelogarcho
+- **Documentación**: Este README.md contiene toda la información
+- **Ejemplos**: `workflows_examples/`
 
 ---
 
-**¡Disfruta usando ComfyUI con estos custom nodes para potenciar tu creatividad! 🎨✨**
+**¡Ahora es más fácil que nunca usar los custom nodes! 🚀**
 
 **Desarrollado con ❤️ por chelogarcho**

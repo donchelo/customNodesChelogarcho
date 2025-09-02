@@ -22,61 +22,36 @@ class OpenAI_Simple_Chat:
     def __init__(self):
         self.client = None
         self.api_key = None
-        # Cargar configuración al inicializar
-        self.load_config()
     
-    def load_config(self):
-        """Carga configuración desde archivos .env"""
-        possible_paths = [
-            os.path.join(os.path.dirname(__file__), '.env'),
-            os.path.join(os.path.dirname(__file__), 'config.env'),
-            os.path.expanduser('~/comfyui_config.env'),
-            '/workspace/ComfyUI/custom_nodes/openai_simple_chat/.env',  # Ruta absoluta
-        ]
+    def initialize_client(self, api_key):
+        """Inicializa el cliente de OpenAI con API key del nodo"""
+        if not api_key or api_key.strip() == "":
+            raise ValueError("OpenAI API Key is required. Please enter your API key in the node.")
         
-        print("🔍 Buscando configuración de API key para OpenAI Simple Chat...")
-        
-        for config_path in possible_paths:
-            if os.path.exists(config_path):
-                try:
-                    with open(config_path, 'r') as f:
-                        for line in f:
-                            line = line.strip()
-                            if line and not line.startswith('#') and '=' in line:
-                                key, value = line.split('=', 1)
-                                os.environ[key.strip()] = value.strip()
-                                print(f"✅ Variable {key.strip()} configurada desde: {config_path}")
-                    print(f"✅ Config cargado desde: {config_path}")
-                    return True
-                except Exception as e:
-                    print(f"⚠️ Error leyendo {config_path}: {e}")
-                    continue
-        
-        if os.getenv('OPENAI_API_KEY'):
-            print("✅ Usando variables de entorno del sistema")
+        try:
+            self.client = OpenAI(api_key=api_key.strip())
             return True
-            
-        print("⚠️ No se encontró configuración de API key")
-        print("🔍 Rutas buscadas:")
-        for path in possible_paths:
-            print(f"   - {path} {'✅' if os.path.exists(path) else '❌'}")
-        return False
+        except Exception as e:
+            raise ValueError(f"Error inicializando cliente OpenAI: {e}")
         
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
+                "api_key": ("STRING", {
+                    "multiline": False,
+                    "default": "",
+                    "placeholder": "Enter your OpenAI API key here"
+                }),
                 "user_prompt": ("STRING", {"default": "Enhance this image", "multiline": True}),
                 "model": (["gpt-4o-mini", "gpt-4o", "gpt-4-turbo", "gpt-4"], {"default": "gpt-4o-mini"}),
                 "max_characters": ("INT", {"default": 500, "min": 50, "max": 2000}),
                 "system_prompt": ("STRING", {"default": "You are a helpful assistant that always responds in English. Enhance and improve the user's request with professional terminology.", "multiline": True}),
-                "api_key": ("STRING", {"default": "", "multiline": False}),
             },
             "optional": {
                 "image_1": ("IMAGE",),
                 "image_2": ("IMAGE",),
                 "image_3": ("IMAGE",),
-                "use_env_key": ("BOOLEAN", {"default": True}),
             }
         }
     
@@ -142,29 +117,15 @@ class OpenAI_Simple_Chat:
     
     def process_with_vision(self, user_prompt: str, model: str, max_characters: int, 
                            system_prompt: str, api_key: str, image_1=None, image_2=None, 
-                           image_3=None, use_env_key: bool = True) -> tuple:
+                           image_3=None) -> tuple:
         """
         Procesa texto + imágenes con OpenAI Responses API
         Devuelve respuesta mejorada siempre en inglés
         """
         try:
-            # Obtener la clave API
-            if use_env_key:
-                self.api_key = os.getenv("OPENAI_API_KEY")
-                if not self.api_key:
-                    print("❌ Error: OPENAI_API_KEY no encontrada en variables de entorno")
-                    print("💡 Soluciones:")
-                    print("   1. Crear archivo .env en el directorio del custom node")
-                    print("   2. Configurar variable de entorno OPENAI_API_KEY")
-                    print("   3. Verificar que el archivo .env existe y tiene el formato correcto")
-                    return ("Error: OPENAI_API_KEY no encontrada en variables de entorno",)
-            else:
-                self.api_key = api_key
-                if not self.api_key:
-                    return ("Error: Clave API requerida",)
-            
-            # Inicializar cliente OpenAI
-            self.client = OpenAI(api_key=self.api_key)
+            # Inicializar cliente OpenAI con la API key del nodo
+            if not self.initialize_client(api_key):
+                return ("Error: No se pudo inicializar el cliente OpenAI con la API key.",)
             
             # Detectar idioma del prompt del usuario
             detected_lang = self.detect_language(user_prompt)
