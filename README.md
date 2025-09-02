@@ -188,37 +188,40 @@ https://yourmirror.io/
 
 ### **Error: "Module not found"**
 ```bash
-# Reinstalar dependencias (archivos únicos):
-./install_jupyter.sh --single-files
+# Reinstalar dependencias:
+./install_jupyter.sh
 
 # Para Windows:
-install_jupyter.bat --single-files
+install_jupyter.bat
 ```
 
 ### **Verificar instalación:**
 ```bash
-python test_nodes.py
+# Verificar estructura:
+ls -la custom_nodes/customNodesChelogarcho/
+ls -la custom_nodes/customNodesChelogarcho/__init__.py
+
+# Verificar importación:
+cd custom_nodes/customNodesChelogarcho
+python -c "import customNodesChelogarcho; print('OK')"
 ```
 
 ## 📁 **Estructura del Proyecto**
 
 ```
 customNodesChelogarcho/
-├── install_jupyter.sh           # 🚀 INSTALADOR ÚNICO para Jupyter/Vast.ai
+├── __init__.py                  # 🆕 Registra automáticamente todos los nodos
+├── install_jupyter.sh           # 🚀 INSTALADOR para Jupyter/Vast.ai
 ├── install_anywhere.sh          # 🌍 INSTALADOR UNIVERSAL (Linux/Mac)
 ├── install_anywhere.bat         # 🌍 INSTALADOR UNIVERSAL (Windows)
-├── nodes/                       # 🆕 ARCHIVOS ÚNICOS (como ComfyUI_Fill-Nodes)
-│   ├── CL_ImageFidelity.py     # OpenAI Image Analysis (archivo único)
-│   ├── CL_VirtualTryOn.py      # Virtual Try-On (archivo único)
-│   ├── CL_GeminiFlash.py       # Gemini Flash Image (archivo único)
-│   └── CL_OpenAIChat.py        # AI Chat Integration (archivo único)
+├── nodes/                       # 📦 Directorio de nodos personalizados
+│   ├── CL_ImageFidelity.py     # OpenAI Image Analysis
+│   ├── CL_VirtualTryOn.py      # Virtual Try-On
+│   ├── CL_GeminiFlash.py       # Gemini Flash Image
+│   └── CL_OpenAIChat.py        # AI Chat Integration
 ├── workflows_examples/          # Ejemplos de workflows para cada nodo
-├── config.env.example           # Configuración de ejemplo (opcional)
 ├── requirements_all_nodes.txt   # Dependencias unificadas
-├── test_nodes.py                # Testing
-├── cleanup_old_structure.bat    # Limpieza para Windows
-├── cleanup_old_structure.sh     # Limpieza para Linux/Mac
-└── INSTALADORES_UNIVERSALES.md  # Documentación de instaladores universales
+└── README.md                    # Documentación completa
 
 ## 🌐 **Optimizado para Vast.ai**
 
@@ -233,18 +236,18 @@ customNodesChelogarcho/
 ```bash
 git pull origin main
 
-# Actualizar archivos únicos (recomendado):
-./install_jupyter.sh --single-files
+# Actualizar estructura estándar (recomendado):
+./install_jupyter.sh
 
 # Para Windows:
-install_jupyter.bat --single-files
+install_jupyter.bat
 
 # Instalador universal (desde cualquier ubicación):
 ./install_anywhere.sh          # Linux/Mac
 install_anywhere.bat           # Windows
 
-# Nota: La estructura antigua ya no está disponible
-# Todos los nodos están consolidados en archivos únicos
+# Nota: Ahora usa estructura de paquete Python estándar
+# Todos los nodos se registran automáticamente
 ```
 
 ## 🤝 **Soporte**
