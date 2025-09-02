@@ -1,0 +1,117 @@
+# ComfyUI Custom Nodes - .gitignore
+# Desarrollado por: chelogarcho
+# 
+# Custom Nodes incluidos:
+# - inputFidelity: OpenAI Image Analysis (by chelogarcho)
+# - mirrorNode: YourMirror Virtual Try-On (by chelogarcho)
+# - bananaNode: Gemini Flash Image (by chelogarcho)
+# - openai_simple_chat: AI Chat Integration (by chelogarcho)
+
+# ===== Archivos de Configuración Sensibles =====
+config.env
+*.env
+.env.local
+.env.production
+
+# ===== API Keys y Secretos =====
+**/config.json
+**/config.env
+**/.env
+**/secrets.json
+**/api_keys.txt
+
+# ===== Archivos de ComfyUI =====
+models/
+output/
+temp/
+*.safetensors
+*.ckpt
+*.pth
+*.bin
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ===== Entornos Virtuales =====
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# ===== IDEs y Editores =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
+logs/
+log/
+
+# ===== Archivos Temporales =====
+*.tmp
+*.temp
+temp/
+tmp/
+
+# ===== Archivos de Sistema =====
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ===== Archivos de Backup =====
+*.bak
+*.backup
+*.old
+*.orig
+
+# ===== Archivos de Datos =====
+*.db
+*.sqlite
+*.sqlite3
+
+# ===== Archivos de Cache =====
+.cache/
+cache/
+*.cache
+
+# ===== Archivos de Configuración Local =====
+config.local.json
+config.local.env
+.env.local
+
+# ===== Notas =====
+# Este archivo protege información sensible como API keys
+# Nunca subas archivos config.env o config.json con API keys reales
+# Usa siempre los archivos .example como plantillas

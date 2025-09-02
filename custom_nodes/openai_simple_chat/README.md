@@ -1,4 +1,6 @@
-# OpenAI Simple Chat - Custom Nodes para ComfyUI
+# OpenAI Simple Chat - Custom Node para ComfyUI
+
+**Desarrollado por: chelogarcho** 🚀
 
 Este custom node permite integrar chat con OpenAI usando la **Responses API** directamente en ComfyUI, facilitando el procesamiento de texto + imágenes y devolviendo respuestas mejoradas siempre en inglés.
 

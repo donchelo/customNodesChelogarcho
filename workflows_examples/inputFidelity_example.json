@@ -1,0 +1,75 @@
+{
+  "last_node_id": 3,
+  "last_link_id": 2,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "OpenAIImageFidelityFashion",
+      "pos": [400, 200],
+      "size": {"0": 300, "1": 400},
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": {
+        "prompt": "Change the outfit color to blue while preserving all details and textures",
+        "primary_image": null,
+        "input_fidelity": "high",
+        "quality": "high",
+        "size": "auto",
+        "output_format": "png",
+        "background": "auto",
+        "fashion_preset": "outfit_variation",
+        "api_method": "images_api"
+      },
+      "title": "OpenAI Image Fidelity Fashion",
+      "properties": {},
+      "widgets_values": [
+        "Change the outfit color to blue while preserving all details and textures",
+        "high",
+        "high",
+        "auto",
+        "png",
+        "auto",
+        "outfit_variation",
+        "images_api"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": [100, 200],
+      "size": {"0": 200, "1": 200},
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": {},
+      "title": "Load Image",
+      "properties": {},
+      "widgets_values": ["example_fashion_image.png"]
+    },
+    {
+      "id": 3,
+      "type": "SaveImage",
+      "pos": [700, 200],
+      "size": {"0": 200, "1": 200},
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": {
+        "images": null,
+        "filename_prefix": "fidelity_output"
+      },
+      "title": "Save Image",
+      "properties": {},
+      "widgets_values": ["fidelity_output"]
+    }
+  ],
+  "links": [
+    [1, 2, 0, 1, 0],
+    [2, 1, 0, 3, 0]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

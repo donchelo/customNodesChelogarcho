@@ -15,6 +15,8 @@ class OpenAI_Simple_Chat:
     """
     Nodo para chat con OpenAI usando Responses API
     Procesa texto + imágenes y devuelve respuestas mejoradas en inglés
+    
+    Developer: chelogarcho
     """
     
     def __init__(self):

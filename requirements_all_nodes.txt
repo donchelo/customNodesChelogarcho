@@ -1,0 +1,47 @@
+# ComfyUI Custom Nodes - Dependencias Unificadas
+# Desarrollado por: chelogarcho
+# Este archivo contiene todas las dependencias necesarias para todos los custom nodes
+# 
+# Custom Nodes incluidos:
+# - inputFidelity: OpenAI Image Analysis (by chelogarcho)
+# - mirrorNode: YourMirror Virtual Try-On (by chelogarcho)
+# - bananaNode: Gemini Flash Image (by chelogarcho)
+# - openai_simple_chat: AI Chat Integration (by chelogarcho)
+
+# Dependencias del sistema
+setuptools>=65.0.0
+wheel>=0.37.0
+
+# ===== inputFidelity Node =====
+# OpenAI API para análisis de fidelidad de imágenes
+openai>=1.12.0
+
+# ===== mirrorNode Node =====
+# API calls y procesamiento de imágenes
+requests>=2.28.0
+
+# ===== bananaNode Node =====
+# Google Generative AI para Gemini Flash Image
+google-generativeai>=0.8.0
+
+# ===== openai_simple_chat Node =====
+# OpenAI API para chat y procesamiento de imágenes
+openai>=1.0.0
+langdetect>=1.0.9
+
+# ===== Dependencias Comunes =====
+# Procesamiento de imágenes
+Pillow>=9.0.0
+PIL>=9.0.0
+
+# Machine Learning y procesamiento numérico
+torch>=1.9.0
+numpy>=1.21.0
+
+# Utilidades adicionales
+typing-extensions>=4.0.0
+
+# Notas de instalación:
+# - torch puede requerir instalación específica según tu sistema
+# - Algunas dependencias pueden tener conflictos de versiones
+# - Si hay problemas, instala cada nodo individualmente usando su requirements.txt
