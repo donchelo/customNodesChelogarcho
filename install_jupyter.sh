@@ -55,14 +55,14 @@ if [ "$1" = "--ultra-simple" ]; then
     exit 0
 fi
 
-# Verificar argumentos para instalación de archivos únicos
-if [ "$1" = "--single-files" ]; then
-    echo "📁 Instalación de Archivos Únicos activada..."
-    echo "🚀 Copiando nodos como archivos únicos a ComfyUI..."
+# Verificar argumentos para instalación estándar
+if [ "$1" = "--standard" ]; then
+    echo "📁 Instalación Estándar activada..."
+    echo "🚀 Instalando nodos con estructura de paquete..."
     
     # Verificar que estamos en el directorio correcto
-    if [ ! -d "nodes" ]; then
-        log_error "❌ No se encontró el directorio 'nodes'. Ejecuta desde el directorio del proyecto."
+    if [ ! -d "nodes" ] || [ ! -f "__init__.py" ]; then
+        log_error "❌ No se encontró el directorio 'nodes' o '__init__.py'. Ejecuta desde el directorio del proyecto."
         exit 1
     fi
     
@@ -84,20 +84,12 @@ if [ "$1" = "--single-files" ]; then
     pip install --upgrade pip setuptools wheel --quiet
     pip install -r requirements_all_nodes.txt --quiet --no-cache-dir
     
-    # Copiar archivos únicos
-    SINGLE_FILES=(
-        "CL_ImageFidelity.py"
-        "CL_VirtualTryOn.py"
-        "CL_GeminiFlash.py"
-        "CL_OpenAIChat.py"
-    )
-    
-    log_info "Copiando archivos únicos a $COMFYUI_DIR/custom_nodes/"
-    for file in "${SINGLE_FILES[@]}"; do
-        if [ -f "nodes/$file" ]; then
-            cp "nodes/$file" "$COMFYUI_DIR/custom_nodes/"
-            log_success "✅ $file copiado"
-        else
+    # Copiar directorio completo como paquete
+    log_info "Copiando paquete completo a $COMFYUI_DIR/custom_nodes/"
+    if [ -d "$COMFYUI_DIR/custom_nodes" ]; then
+        cp -r . "$COMFYUI_DIR/custom_nodes/"
+        log_success "✅ Paquete completo copiado"
+    else
             log_warning "⚠️ $file no encontrado"
         fi
     done
@@ -210,10 +202,7 @@ verify_node_installation() {
 
 # Lista de nodos a instalar
 NODES=(
-    "inputFidelity"
-    "mirrorNode" 
-    "bananaNode"
-    "openai_simple_chat"
+    "customNodesChelogarcho"
 )
 
 # Instalación principal
@@ -263,7 +252,7 @@ if [ "$INSTALLATION_SUCCESS" = true ]; then
     echo ""
     echo "⚡ Opciones de instalación disponibles:"
     echo "   ./install_jupyter.sh --ultra-simple    # Instalación tradicional rápida"
-    echo "   ./install_jupyter.sh --single-files    # Instalación de archivos únicos"
+    echo "   ./install_jupyter.sh --standard        # Instalación estándar (recomendada)"
 else
     log_error "❌ Algunos nodos no se instalaron correctamente"
     echo "🔍 Revisa los logs anteriores para más detalles"

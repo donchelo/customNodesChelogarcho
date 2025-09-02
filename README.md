@@ -4,8 +4,8 @@
 
 Una colección completa de nodos personalizados para ComfyUI que extienden las capacidades de generación y procesamiento de imágenes con IA, **optimizada para entornos Vast.ai y uso local**.
 
-> 🆕 **NUEVO: Refactorización completa a archivos únicos**  
-> Todos los nodos están ahora consolidados en archivos Python individuales para máxima simplicidad, inspirado en ComfyUI_Fill-Nodes.
+> 🆕 **NUEVO: Estructura completa siguiendo Fill-Nodes**  
+> Todos los nodos están organizados en estructura de paquete Python con `__init__.py` para máxima compatibilidad, siguiendo exactamente las mejores prácticas de ComfyUI_Fill-Nodes.
 
 ## 🌟 **Instalación Rápida para Jupyter/Vast.ai**
 
@@ -40,13 +40,22 @@ install_jupyter.bat
 install_jupyter.bat --ultra-simple
 ```
 
-### **🚀 Opción Principal: Archivos Únicos (Recomendada)**
+### **🚀 Opción Principal: Estructura de Paquete (Recomendada)**
 ```bash
-# Instalación usando archivos únicos (como ComfyUI_Fill-Nodes)
-./install_jupyter.sh --single-files
+# Instalación estándar (como ComfyUI_Fill-Nodes)
+./install_jupyter.sh
 
 # Para Windows:
-install_jupyter.bat --single-files
+install_jupyter.bat
+```
+
+### **🌍 Instalador Universal (Desde cualquier ubicación)**
+```bash
+# Linux/Mac - Ejecutar desde cualquier lugar
+./install_anywhere.sh
+
+# Windows - Ejecutar desde cualquier lugar
+install_anywhere.bat
 ```
 
 ### **Acceso desde Jupyter:**
@@ -62,19 +71,49 @@ install_jupyter.bat --single-files
 | **CL_GeminiFlash** | Generación/edición de imágenes | Google Gemini 2.5 Flash | Generación creativa, consistencia |
 | **CL_OpenAIChat** | Chat inteligente | OpenAI GPT | Análisis, prompts, asistencia |
 
-### **📁 Formato Principal (Archivos Únicos)**
+### **📁 Formato Principal (Estructura de Paquete)**
 
-**Todos los nodos están consolidados en archivos únicos para máxima simplicidad:**
+**Todos los nodos están organizados en estructura de paquete Python siguiendo Fill-Nodes:**
 
-- `CL_ImageFidelity.py` - OpenAI Image Analysis (todo en un archivo)
-- `CL_VirtualTryOn.py` - Virtual Try-On (todo en un archivo)  
-- `CL_GeminiFlash.py` - Gemini Flash Image (todo en un archivo)
-- `CL_OpenAIChat.py` - AI Chat Integration (todo en un archivo)
-
-**Instalación ultra-simple:**
-```bash
-./install_jupyter.sh --single-files
 ```
+customNodesChelogarcho/
+├── __init__.py              ← Registra todos los nodos
+├── nodes/                   ← Directorio de nodos
+│   ├── CL_ImageFidelity.py
+│   ├── CL_VirtualTryOn.py  
+│   ├── CL_GeminiFlash.py
+│   └── CL_OpenAIChat.py
+└── requirements_all_nodes.txt
+```
+
+**Instalación estándar:**
+```bash
+./install_jupyter.sh
+```
+
+## 🏗️ **Estructura del Proyecto (NUEVO)**
+
+**Siguiendo las mejores prácticas de ComfyUI_Fill-Nodes:**
+
+```
+ComfyUI/
+├── custom_nodes/
+│   └── customNodesChelogarcho/     ← Clonar aquí
+│       ├── __init__.py             ← Registra todos los nodos
+│       ├── nodes/                  ← Directorio de nodos
+│       │   ├── CL_ImageFidelity.py
+│       │   ├── CL_VirtualTryOn.py  
+│       │   ├── CL_GeminiFlash.py
+│       │   └── CL_OpenAIChat.py
+│       └── requirements_all_nodes.txt
+└── main.py
+```
+
+**Ventajas de esta estructura:**
+- ✅ **Compatibilidad total** con ComfyUI
+- ✅ **Fácil mantenimiento** y actualizaciones
+- ✅ **Sigue estándares** de la comunidad
+- ✅ **Auto-registro** de nodos al cargar
 
 ## 🔑 **API Keys Visibles (NUEVO)**
 
@@ -166,6 +205,8 @@ python test_nodes.py
 ```
 customNodesChelogarcho/
 ├── install_jupyter.sh           # 🚀 INSTALADOR ÚNICO para Jupyter/Vast.ai
+├── install_anywhere.sh          # 🌍 INSTALADOR UNIVERSAL (Linux/Mac)
+├── install_anywhere.bat         # 🌍 INSTALADOR UNIVERSAL (Windows)
 ├── nodes/                       # 🆕 ARCHIVOS ÚNICOS (como ComfyUI_Fill-Nodes)
 │   ├── CL_ImageFidelity.py     # OpenAI Image Analysis (archivo único)
 │   ├── CL_VirtualTryOn.py      # Virtual Try-On (archivo único)
@@ -176,8 +217,8 @@ customNodesChelogarcho/
 ├── requirements_all_nodes.txt   # Dependencias unificadas
 ├── test_nodes.py                # Testing
 ├── cleanup_old_structure.bat    # Limpieza para Windows
-└── cleanup_old_structure.sh     # Limpieza para Linux/Mac
-```
+├── cleanup_old_structure.sh     # Limpieza para Linux/Mac
+└── INSTALADORES_UNIVERSALES.md  # Documentación de instaladores universales
 
 ## 🌐 **Optimizado para Vast.ai**
 
@@ -197,6 +238,10 @@ git pull origin main
 
 # Para Windows:
 install_jupyter.bat --single-files
+
+# Instalador universal (desde cualquier ubicación):
+./install_anywhere.sh          # Linux/Mac
+install_anywhere.bat           # Windows
 
 # Nota: La estructura antigua ya no está disponible
 # Todos los nodos están consolidados en archivos únicos
