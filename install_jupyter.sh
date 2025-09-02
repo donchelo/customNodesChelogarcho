@@ -1,273 +1,319 @@
 #!/bin/bash
 
 # 🚀 ComfyUI Custom Nodes - Instalador Automático para Jupyter/Vast.ai
-# Desarrollado por: chelogarcho
-# Optimizado para entornos cloud con acceso /proxy/8188/
+# 👨‍💻 Desarrollado por: chelogarcho
+# 🌐 Optimizado para Vast.ai con acceso /proxy/8188/
+# 🔑 API Keys visibles en cada nodo (no más archivos de configuración)
 
-set -e  # Salir si hay algún error
-
-echo "🚀 ComfyUI Custom Nodes - Instalador Automático para Jupyter/Vast.ai"
-echo "👨‍💻 Desarrollado por: chelogarcho"
-echo "🌐 Optimizado para Vast.ai con acceso /proxy/8188/"
-echo "🔑 API Keys visibles en cada nodo (no más archivos de configuración)"
-echo "=================================================="
+set -e  # Salir en caso de error
 
 # Colores para output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-PURPLE='\033[0;35m'
 NC='\033[0m' # No Color
 
-# Función para logging
+# Funciones de logging
 log_info() {
-    echo -e "${BLUE}[INFO]${NC} $1"
+    echo -e "${BLUE}ℹ️  $1${NC}"
 }
 
 log_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
+    echo -e "${GREEN}✅ $1${NC}"
 }
 
 log_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
+    echo -e "${YELLOW}⚠️  $1${NC}"
 }
 
 log_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+    echo -e "${RED}❌ $1${NC}"
 }
 
-log_step() {
-    echo -e "${PURPLE}[STEP]${NC} $1"
+echo "=================================================="
+echo "🚀 ComfyUI Custom Nodes - Instalador Automático"
+echo "👨‍💻 Desarrollado por: chelogarcho"
+echo "🌐 Optimizado para Vast.ai con acceso /proxy/8188/"
+echo "🔑 API Keys visibles en cada nodo"
+echo "=================================================="
+
+# Función para encontrar el directorio ComfyUI
+find_comfyui_dir() {
+    local current_dir=$(pwd)
+    local search_dir="$current_dir"
+    
+    # Buscar ComfyUI desde el directorio actual hacia arriba
+    while [ "$search_dir" != "/" ]; do
+        if [ -d "$search_dir/ComfyUI" ]; then
+            echo "$search_dir/ComfyUI"
+            return 0
+        fi
+        search_dir=$(dirname "$search_dir")
+    done
+    
+    # Si no se encuentra, buscar en el directorio actual
+    if [ -d "$current_dir/ComfyUI" ]; then
+        echo "$current_dir/ComfyUI"
+        return 0
+    fi
+    
+    # Si no se encuentra, buscar en directorios padre
+    if [ -d "$current_dir/../ComfyUI" ]; then
+        echo "$current_dir/../ComfyUI"
+        return 0
+    fi
+    
+    if [ -d "$current_dir/../../ComfyUI" ]; then
+        echo "$current_dir/../../ComfyUI"
+        return 0
+    fi
+    
+    return 1
 }
 
-# Verificar argumentos para instalación ultra-simple
-if [ "$1" = "--ultra-simple" ]; then
-    echo "⚡ Instalación Ultra-Simple activada..."
-    echo "🚀 Instalando ComfyUI Custom Nodes..."
+# Función para encontrar el directorio del proyecto
+find_project_dir() {
+    local current_dir=$(pwd)
+    log_info "🔍 Buscando proyecto desde: $current_dir"
     
-    # Instalación ultra-simple
-    pip install --upgrade pip setuptools wheel --quiet
-    pip install -r requirements_all_nodes.txt --quiet --no-cache-dir
+    # Si estamos en el directorio del proyecto
+    if [ -f "$current_dir/install_jupyter.sh" ] && [ -d "$current_dir/nodes" ]; then
+        log_info "✅ Proyecto encontrado en directorio actual"
+        echo "$current_dir"
+        return 0
+    fi
     
-    echo "✅ Instalación completada! Busca nodos por 'chelogarcho' en ComfyUI"
-    echo "🌐 Accede desde: http://proxy/8188/"
-    exit 0
-fi
+    # Si estamos en custom_nodes/customNodesChelogarcho
+    if [ -f "$current_dir/install_jupyter.sh" ] && [ -d "$current_dir/nodes" ]; then
+        log_info "✅ Proyecto encontrado en directorio actual (custom_nodes)"
+        echo "$current_dir"
+        return 0
+    fi
+    
+    # Buscar en directorios padre
+    if [ -f "$current_dir/../install_jupyter.sh" ] && [ -d "$current_dir/../nodes" ]; then
+        log_info "✅ Proyecto encontrado en directorio padre"
+        echo "$current_dir/.."
+        return 0
+    fi
+    
+    if [ -f "$current_dir/../../install_jupyter.sh" ] && [ -d "$current_dir/../../nodes" ]; then
+        log_info "✅ Proyecto encontrado en directorio padre del padre"
+        echo "$current_dir/../.."
+        return 0
+    fi
+    
+    # Buscar desde ComfyUI hacia abajo
+    if [ -d "$current_dir/custom_nodes/customNodesChelogarcho" ]; then
+        log_info "🔍 Verificando custom_nodes/customNodesChelogarcho..."
+        if [ -f "$current_dir/custom_nodes/customNodesChelogarcho/install_jupyter.sh" ] && [ -d "$current_dir/custom_nodes/customNodesChelogarcho/nodes" ]; then
+            log_info "✅ Proyecto encontrado en custom_nodes/customNodesChelogarcho"
+            echo "$current_dir/custom_nodes/customNodesChelogarcho"
+            return 0
+        else
+            log_warning "⚠️ Directorio existe pero no tiene estructura correcta"
+        fi
+    fi
+    
+    # Buscar en directorios padre desde ComfyUI
+    if [ -d "$current_dir/../custom_nodes/customNodesChelogarcho" ]; then
+        log_info "🔍 Verificando ../custom_nodes/customNodesChelogarcho..."
+        if [ -f "$current_dir/../custom_nodes/customNodesChelogarcho/install_jupyter.sh" ] && [ -d "$current_dir/../custom_nodes/customNodesChelogarcho/nodes" ]; then
+            log_info "✅ Proyecto encontrado en ../custom_nodes/customNodesChelogarcho"
+            echo "$current_dir/../custom_nodes/customNodesChelogarcho"
+            return 0
+        fi
+    fi
+    
+    if [ -d "$current_dir/../../custom_nodes/customNodesChelogarcho" ]; then
+        log_info "🔍 Verificando ../../custom_nodes/customNodesChelogarcho..."
+        if [ -f "$current_dir/../../custom_nodes/customNodesChelogarcho/install_jupyter.sh" ] && [ -d "$current_dir/../../custom_nodes/customNodesChelogarcho/nodes" ]; then
+            log_info "✅ Proyecto encontrado en ../../custom_nodes/customNodesChelogarcho"
+            echo "$current_dir/../../custom_nodes/customNodesChelogarcho"
+            return 0
+        fi
+    fi
+    
+    log_error "❌ No se pudo encontrar el proyecto en ninguna ubicación"
+    return 1
+}
 
-# Verificar argumentos para instalación estándar
-if [ "$1" = "--standard" ]; then
-    echo "📁 Instalación Estándar activada..."
-    echo "🚀 Instalando nodos con estructura de paquete..."
+# Función principal de instalación
+main_installation() {
+    log_info "🔍 Detectando directorios..."
     
-    # Verificar que estamos en el directorio correcto
-    if [ ! -d "nodes" ] || [ ! -f "__init__.py" ]; then
-        log_error "❌ No se encontró el directorio 'nodes' o '__init__.py'. Ejecuta desde el directorio del proyecto."
+    # Encontrar directorio ComfyUI
+    local comfyui_dir
+    if comfyui_dir=$(find_comfyui_dir); then
+        log_success "✅ ComfyUI encontrado en: $comfyui_dir"
+    else
+        log_error "❌ No se pudo encontrar ComfyUI. Asegúrate de estar en el directorio correcto."
         exit 1
     fi
     
-    # Verificar que estamos en ComfyUI o encontrar ComfyUI
-    if [ ! -d "custom_nodes" ]; then
-        if [ -d "../ComfyUI/custom_nodes" ]; then
-            COMFYUI_DIR="../ComfyUI"
-        elif [ -d "../../ComfyUI/custom_nodes" ]; then
-            COMFYUI_DIR="../../ComfyUI"
-        else
-            log_error "❌ No se pudo encontrar ComfyUI. Ejecuta desde ComfyUI o desde el directorio del proyecto."
-            exit 1
-        fi
+    # Encontrar directorio del proyecto
+    local project_dir
+    if project_dir=$(find_project_dir); then
+        log_success "✅ Proyecto encontrado en: $project_dir"
     else
-        COMFYUI_DIR="."
+        log_error "❌ No se pudo encontrar el proyecto customNodesChelogarcho."
+        exit 1
     fi
     
-    # Instalar dependencias
-    pip install --upgrade pip setuptools wheel --quiet
-    pip install -r requirements_all_nodes.txt --quiet --no-cache-dir
+    # Cambiar al directorio ComfyUI
+    cd "$comfyui_dir"
+    log_info "📁 Cambiando a directorio ComfyUI: $(pwd)"
     
-    # Copiar directorio completo como paquete
-    log_info "Copiando paquete completo a $COMFYUI_DIR/custom_nodes/"
-    if [ -d "$COMFYUI_DIR/custom_nodes" ]; then
-        cp -r . "$COMFYUI_DIR/custom_nodes/"
-        log_success "✅ Paquete completo copiado"
+    # Verificar que custom_nodes existe
+    if [ ! -d "custom_nodes" ]; then
+        log_error "❌ No se encontró el directorio 'custom_nodes' en ComfyUI."
+        exit 1
+    fi
+    
+    # Verificar que el proyecto esté en custom_nodes
+    local project_in_custom_nodes="$comfyui_dir/custom_nodes/customNodesChelogarcho"
+    if [ ! -d "$project_in_custom_nodes" ]; then
+        log_error "❌ No se encontró customNodesChelogarcho en custom_nodes. Clona primero el repositorio."
+        exit 1
+    fi
+    
+    # Instalar dependencias principales
+    log_info "📦 Instalando dependencias principales..."
+    cd "$project_in_custom_nodes"
+    
+    if pip install -r requirements_all_nodes.txt --quiet --no-cache-dir; then
+        log_success "✅ Dependencias principales instaladas"
     else
-            log_warning "⚠️ $file no encontrado"
+        log_warning "⚠️ Error instalando dependencias principales, continuando..."
+    fi
+    
+    # Volver al directorio ComfyUI
+    cd "$comfyui_dir"
+    
+    # Lista de nodos disponibles
+    local NODES=("CL_GeminiFlash" "CL_ImageFidelity" "CL_VirtualTryOn" "CL_OpenAIChat")
+    
+    # Instalar nodos como paquetes
+    log_info "🔧 Instalando nodos como paquetes..."
+    
+    for node in "${NODES[@]}"; do
+        log_info "📋 Instalando $node..."
+        
+        # Crear directorio del nodo
+        mkdir -p "custom_nodes/$node"
+        
+        # Copiar archivo del nodo
+        if [ -f "custom_nodes/customNodesChelogarcho/nodes/$node.py" ]; then
+            cp "custom_nodes/customNodesChelogarcho/nodes/$node.py" "custom_nodes/$node/"
+            
+            # Copiar __init__.py
+            if [ -f "custom_nodes/customNodesChelogarcho/__init__.py" ]; then
+                cp "custom_nodes/customNodesChelogarcho/__init__.py" "custom_nodes/$node/"
+            fi
+            
+            # Copiar requirements como requirements.txt del nodo
+            if [ -f "custom_nodes/customNodesChelogarcho/requirements_all_nodes.txt" ]; then
+                cp "custom_nodes/customNodesChelogarcho/requirements_all_nodes.txt" "custom_nodes/$node/requirements.txt"
+            fi
+            
+            log_success "✅ $node instalado correctamente"
+        else
+            log_error "❌ Archivo fuente para $node no encontrado"
+        fi
+    done
+    
+    # Verificar instalación final
+    echo ""
+    echo "=================================================="
+    echo "🔍 Verificando instalación..."
+    echo "=================================================="
+    
+    local all_installed=true
+    for node in "${NODES[@]}"; do
+        if [ -d "custom_nodes/$node" ] && [ -f "custom_nodes/$node/$node.py" ]; then
+            log_success "✅ $node instalado correctamente"
+        else
+            log_error "❌ $node no se instaló correctamente"
+            all_installed=false
         fi
     done
     
     echo ""
     echo "=================================================="
-    echo "🎉 ¡Archivos únicos instalados correctamente!"
-    echo ""
-    echo "📋 Archivos copiados:"
-    for file in "${SINGLE_FILES[@]}"; do
-        if [ -f "$COMFYUI_DIR/custom_nodes/$file" ]; then
-            echo "   ✅ $file"
-        fi
-    done
+    if [ "$all_installed" = true ]; then
+        echo "🎉 ¡Instalación completada exitosamente!"
+        log_success "Todos los nodos están listos para usar"
+    else
+        echo "⚠️ Instalación completada con advertencias"
+        log_warning "Algunos nodos pueden no funcionar correctamente"
+    fi
+    
     echo ""
     echo "🚀 ComfyUI está listo para usar!"
     echo "💡 Reinicia ComfyUI para que los cambios surtan efecto"
     echo "🔍 Busca nodos por 'CL_' o 'chelogarcho' en ComfyUI"
     echo "🌐 Accede desde: http://proxy/8188/"
     echo "=================================================="
-    exit 0
-fi
-
-# Verificar que estamos en el directorio correcto
-if [ ! -d "custom_nodes" ]; then
-    log_warning "⚠️ No se encontró el directorio 'custom_nodes' en el directorio actual."
-    log_info "Verificando si estamos en el directorio correcto..."
-    
-    # Si estamos en el directorio del proyecto, cambiar a ComfyUI
-    if [ -d "install_jupyter.sh" ] && [ -d "requirements_all_nodes.txt" ]; then
-        log_info "Parece que estamos en el directorio del proyecto. Buscando ComfyUI..."
-        
-        # Buscar ComfyUI en directorios padre
-        if [ -d "../ComfyUI" ]; then
-            log_info "Encontrado ComfyUI en directorio padre. Cambiando..."
-            cd ../ComfyUI
-        elif [ -d "../../ComfyUI" ]; then
-            log_info "Encontrado ComfyUI en directorio padre del padre. Cambiando..."
-            cd ../../ComfyUI
-        else
-            log_error "No se pudo encontrar ComfyUI. Ejecuta este script desde la raíz de ComfyUI o desde el directorio del proyecto."
-            exit 1
-        fi
-    else
-        log_error "No se encontró el directorio 'custom_nodes'. Ejecuta este script desde la raíz de ComfyUI."
-        exit 1
-    fi
-fi
-
-# Verificar Python
-if ! command -v python3 &> /dev/null; then
-    if ! command -v python &> /dev/null; then
-        log_error "Python no está instalado. Por favor instala Python 3.8+"
-        exit 1
-    else
-        PYTHON_CMD="python"
-    fi
-else
-    PYTHON_CMD="python3"
-fi
-
-PYTHON_VERSION=$($PYTHON_CMD -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
-log_info "Python version: $PYTHON_VERSION"
-
-# Verificar pip
-if ! command -v pip3 &> /dev/null; then
-    if ! command -v pip &> /dev/null; then
-        log_error "pip no está instalado. Por favor instala pip"
-        exit 1
-    else
-        PIP_CMD="pip"
-    fi
-else
-    PIP_CMD="pip3"
-fi
-
-log_info "Pip command: $PIP_CMD"
-
-# Función para instalar dependencias de un nodo
-install_node_dependencies() {
-    local node_name=$1
-    local requirements_file="custom_nodes/$node_name/requirements.txt"
-    
-    if [ -f "$requirements_file" ]; then
-        log_info "Instalando dependencias para $node_name..."
-        if $PIP_CMD install -r "$requirements_file" --quiet --no-cache-dir; then
-            log_success "✅ Dependencias de $node_name instaladas"
-        else
-            log_warning "⚠️ Error instalando dependencias de $node_name, continuando..."
-        fi
-    else
-        log_warning "⚠️ No se encontró requirements.txt para $node_name"
-    fi
 }
 
-# Función para verificar instalación de un nodo
-verify_node_installation() {
-    local node_name=$1
-    local init_file="custom_nodes/$node_name/__init__.py"
-    local main_file="custom_nodes/$node_name/*.py"
+# Función para instalación ultra-simple
+ultra_simple_installation() {
+    log_info "📁 Instalación Ultra-Simple activada..."
     
-    if [ -f "$init_file" ] && ls $main_file 1> /dev/null 2>&1; then
-        log_success "✅ $node_name está listo"
-        return 0
+    # Encontrar directorio del proyecto
+    local project_dir
+    if project_dir=$(find_project_dir); then
+        log_success "✅ Proyecto encontrado en: $project_dir"
     else
-        log_error "❌ $node_name no se instaló correctamente"
-        return 1
+        log_error "❌ No se pudo encontrar el proyecto."
+        exit 1
     fi
-}
-
-# Lista de nodos a instalar
-NODES=(
-    "customNodesChelogarcho"
-)
-
-# Instalación principal
-log_step "1. Actualizando dependencias del sistema..."
-$PIP_CMD install --upgrade pip setuptools wheel --quiet
-
-log_step "2. Instalando dependencias de todos los nodos..."
-for node in "${NODES[@]}"; do
-    if [ -d "custom_nodes/$node" ]; then
-        install_node_dependencies "$node"
+    
+    # Cambiar al directorio del proyecto
+    cd "$project_dir"
+    
+    # Encontrar ComfyUI
+    local comfyui_dir
+    if comfyui_dir=$(find_comfyui_dir); then
+        log_success "✅ ComfyUI encontrado en: $comfyui_dir"
     else
-        log_warning "⚠️ Directorio $node no encontrado"
+        log_error "❌ No se pudo encontrar ComfyUI."
+        exit 1
     fi
-done
-
-log_step "3. Verificando instalación de nodos..."
-INSTALLATION_SUCCESS=true
-
-for node in "${NODES[@]}"; do
-    if ! verify_node_installation "$node"; then
-        INSTALLATION_SUCCESS=false
+    
+    # Instalar dependencias
+    log_info "📦 Instalando dependencias..."
+    if pip install -r requirements_all_nodes.txt --quiet --no-cache-dir; then
+        log_success "✅ Dependencias instaladas"
+    else
+        log_warning "⚠️ Error instalando dependencias, continuando..."
     fi
-done
-
-# Información final
-echo ""
-echo "=================================================="
-if [ "$INSTALLATION_SUCCESS" = true ]; then
-    log_success "🎉 ¡Todos los custom nodes se instalaron correctamente!"
+    
+    # Copiar paquete completo
+    log_info "📋 Copiando paquete completo..."
+    if [ -d "$comfyui_dir/custom_nodes" ]; then
+        cp -r . "$comfyui_dir/custom_nodes/"
+        log_success "✅ Paquete completo copiado"
+    else
+        log_error "❌ No se pudo acceder al directorio custom_nodes"
+        exit 1
+    fi
+    
     echo ""
-    echo "📋 Nodos instalados:"
-    for node in "${NODES[@]}"; do
-        echo "   ✅ $node"
-    done
+    echo "=================================================="
+    echo "🎉 ¡Instalación Ultra-Simple completada!"
     echo ""
-    echo "🚀 ComfyUI está listo para usar con tus custom nodes!"
+    echo "🚀 ComfyUI está listo para usar!"
     echo "💡 Reinicia ComfyUI para que los cambios surtan efecto"
-    echo ""
-    echo "🌐 Acceso desde Jupyter/Vast.ai:"
-    echo "   - URL: http://proxy/8188/"
-    echo "   - Busca nodos por 'chelogarcho' en ComfyUI"
-    echo ""
-    echo "🔑 IMPORTANTE - API Keys Visibles:"
-    echo "   - Todos los nodos tienen campos 'api_key' visibles"
-    echo "   - No más archivos de configuración necesarios"
-    echo "   - Pega tu API key directamente en cada nodo"
-    echo ""
-    echo "⚡ Opciones de instalación disponibles:"
-    echo "   ./install_jupyter.sh --ultra-simple    # Instalación tradicional rápida"
-    echo "   ./install_jupyter.sh --standard        # Instalación estándar (recomendada)"
-else
-    log_error "❌ Algunos nodos no se instalaron correctamente"
-    echo "🔍 Revisa los logs anteriores para más detalles"
-    exit 1
-fi
+    echo "🔍 Busca nodos por 'CL_' o 'chelogarcho' en ComfyUI"
+    echo "🌐 Accede desde: http://proxy/8188/"
+    echo "=================================================="
+}
 
-echo ""
-echo "📚 Recursos disponibles:"
-echo "   - README.md: Documentación completa"
-echo "   - workflows_examples/: Ejemplos de uso"
-echo ""
-echo "🔧 Comandos útiles:"
-echo "   - Reiniciar ComfyUI: Reinicia la aplicación"
-echo "   - Ver nodos: Busca 'chelogarcho' en ComfyUI"
-echo "   - Configurar API: Pega API key en campo 'api_key' del nodo"
-echo ""
-echo "👨‍💻 Desarrollado por: chelogarcho"
-echo "=================================================="
+# Verificar argumentos
+if [ "$1" = "--ultra-simple" ]; then
+    ultra_simple_installation
+else
+    main_installation
+fi
