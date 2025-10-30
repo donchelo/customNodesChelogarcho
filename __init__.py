@@ -18,7 +18,7 @@ Version: 1.0.0
 from .nodes.CL_ImageFidelity import CL_ImageFidelity
 from .nodes.CL_VirtualTryOn import CL_VirtualTryOn
 from .nodes.CL_GeminiFlash import CL_GeminiFlash
-from .nodes.CL_OpenAIChat import CL_OpenAIChat, CL_OpenAIConversation
+from .nodes.CL_OpenAIChat import CL_OpenAIChat
 
 # Mapeo de clases de nodos para ComfyUI
 NODE_CLASS_MAPPINGS = {
@@ -26,7 +26,6 @@ NODE_CLASS_MAPPINGS = {
     "CL_VirtualTryOn": CL_VirtualTryOn,
     "CL_GeminiFlash": CL_GeminiFlash,
     "CL_OpenAIChat": CL_OpenAIChat,
-    "CL_OpenAIConversation": CL_OpenAIConversation,
 }
 
 # Mapeo de nombres de visualización para ComfyUI
@@ -35,7 +34,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "CL_VirtualTryOn": "CL Virtual Try-On",
     "CL_GeminiFlash": "CL Gemini Flash",
     "CL_OpenAIChat": "CL OpenAI Chat",
-    "CL_OpenAIConversation": "CL OpenAI Conversation",
 }
 
 # Información del paquete

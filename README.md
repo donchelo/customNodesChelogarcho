@@ -1,263 +1,71 @@
-# 🚀 ComfyUI Custom Nodes Collection - by chelogarcho
+# ComfyUI Custom Nodes por chelogarcho
 
-**Desarrollado por: chelogarcho** 🎨
+Colección de nodos personalizados para ComfyUI. Diseño simple, sin configuraciones externas, con campos `api_key` visibles en cada nodo. Optimizado para uso local y entornos Jupyter/Vast.ai.
 
-Una colección completa de nodos personalizados para ComfyUI que extienden las capacidades de generación y procesamiento de imágenes con IA, **optimizada para entornos Vast.ai y uso local**.
+## Instalación (recomendada)
 
-> 🆕 **NUEVO: Estructura completa siguiendo Fill-Nodes**  
-> Todos los nodos están organizados en estructura de paquete Python con `__init__.py` para máxima compatibilidad, siguiendo exactamente las mejores prácticas de ComfyUI_Fill-Nodes.
-
-## 🌟 **Instalación Rápida para Jupyter/Vast.ai**
-
-### **Opción 1: Una sola línea (Recomendada)**
-```bash
-curl -sSL https://raw.githubusercontent.com/donchelo/customNodesChelogarcho/main/install_jupyter.sh | bash
-```
-
-### **Opción 2: Descargar y ejecutar**
 ```bash
 cd ComfyUI/custom_nodes/
 git clone https://github.com/donchelo/customNodesChelogarcho.git
-cd customNodesChelogarcho
-chmod +x install_jupyter.sh
-./install_jupyter.sh
 ```
 
-### **Opción 2.1: Para Windows**
-```cmd
-cd ComfyUI\custom_nodes\
-git clone https://github.com/donchelo/customNodesChelogarcho.git
-cd customNodesChelogarcho
-install_jupyter.bat
-```
+- En Jupyter/Vast.ai: accede a `http://proxy/8188/` y busca "chelogarcho".
 
-### **Opción 3: Instalación Ultra-Simple**
-```bash
-# Linux/Mac
-./install_jupyter.sh --ultra-simple
 
-# Windows
-install_jupyter.bat --ultra-simple
-```
+## Nodos incluidos
 
-### **🚀 Opción Principal: Estructura de Paquete (Recomendada)**
-```bash
-# Instalación estándar (como ComfyUI_Fill-Nodes)
-./install_jupyter.sh
+- CL_ImageFidelity (OpenAI): análisis/edición de imágenes
+- CL_VirtualTryOn (YourMirror.io): try-on virtual
+- CL_GeminiFlash (Gemini 2.5 Flash): generación/edición
+- CL_OpenAIChat (OpenAI): análisis y chat con visión
 
-# Para Windows:
-install_jupyter.bat
-```
+## Uso básico
 
-### **🌍 Instalador Universal (Desde cualquier ubicación)**
-```bash
-# Linux/Mac - Ejecutar desde cualquier lugar
-./install_anywhere.sh
+1) Arrastra el nodo al canvas y pega tu `api_key` en el campo correspondiente.  
+2) Conecta entradas/salidas estándar (LoadImage/SaveImage/Preview).  
+3) Ejecuta el workflow.
 
-# Windows - Ejecutar desde cualquier lugar
-install_anywhere.bat
-```
+Ejemplos listos: `workflows_examples/` (incluye `combined_workflow_example.json`).
 
-### **Acceso desde Jupyter:**
-- **URL**: `http://proxy/8188/`
-- **Buscar nodos**: Busca por **"chelogarcho"** en ComfyUI
+## API keys
 
-## 📋 **Custom Nodes Incluidos**
+- OpenAI: `https://platform.openai.com/api-keys`
+- Google (Gemini): `https://aistudio.google.com/app/apikey`
+- YourMirror.io: `https://yourmirror.io/`
 
-| Nodo | Función | Tecnología | Caso de Uso |
-|------|---------|------------|--------------|
-| **CL_ImageFidelity** | Análisis de fidelidad de imágenes | OpenAI | Moda, productos, e-commerce |
-| **CL_VirtualTryOn** | Virtual Try-On | YourMirror.io | Ropa, calzado, accesorios |
-| **CL_GeminiFlash** | Generación/edición de imágenes | Google Gemini 2.5 Flash | Generación creativa, consistencia |
-| **CL_OpenAIChat** | Chat inteligente | OpenAI GPT | Análisis, prompts, asistencia |
+No se requieren archivos de configuración. Evita compartir workflows con claves embebidas.
 
-### **📁 Formato Principal (Estructura de Paquete)**
-
-**Todos los nodos están organizados en estructura de paquete Python siguiendo Fill-Nodes:**
-
-```
-customNodesChelogarcho/
-├── __init__.py              ← Registra todos los nodos
-├── nodes/                   ← Directorio de nodos
-│   ├── CL_ImageFidelity.py
-│   ├── CL_VirtualTryOn.py  
-│   ├── CL_GeminiFlash.py
-│   └── CL_OpenAIChat.py
-└── requirements_all_nodes.txt
-```
-
-**Instalación estándar:**
-```bash
-./install_jupyter.sh
-```
-
-## 🏗️ **Estructura del Proyecto (NUEVO)**
-
-**Siguiendo las mejores prácticas de ComfyUI_Fill-Nodes:**
+## Estructura
 
 ```
 ComfyUI/
-├── custom_nodes/
-│   └── customNodesChelogarcho/     ← Clonar aquí
-│       ├── __init__.py             ← Registra todos los nodos
-│       ├── nodes/                  ← Directorio de nodos
-│       │   ├── CL_ImageFidelity.py
-│       │   ├── CL_VirtualTryOn.py  
-│       │   ├── CL_GeminiFlash.py
-│       │   └── CL_OpenAIChat.py
-│       └── requirements_all_nodes.txt
-└── main.py
+└── custom_nodes/
+    └── customNodesChelogarcho/
+        ├── __init__.py
+        ├── nodes/
+        │   ├── CL_ImageFidelity.py
+        │   ├── CL_VirtualTryOn.py
+        │   ├── CL_GeminiFlash.py
+        │   └── CL_OpenAIChat.py
+        └── requirements_all_nodes.txt
 ```
 
-**Ventajas de esta estructura:**
-- ✅ **Compatibilidad total** con ComfyUI
-- ✅ **Fácil mantenimiento** y actualizaciones
-- ✅ **Sigue estándares** de la comunidad
-- ✅ **Auto-registro** de nodos al cargar
+## Resolución de problemas (rápido)
 
-## 🔑 **API Keys Visibles (NUEVO)**
-
-**Todos los nodos tienen campos visibles para las API keys**, eliminando la necesidad de archivos de configuración:
-
-- ✅ **CL_ImageFidelity**: Campo `api_key` para OpenAI
-- ✅ **CL_VirtualTryOn**: Campo `api_key` para YourMirror.io  
-- ✅ **CL_GeminiFlash**: Campo `api_key` para Google
-- ✅ **CL_OpenAIChat**: Campo `api_key` para OpenAI
-
-### **Cómo usar:**
-1. **Arrastrar nodo** al canvas
-2. **Hacer clic en campo `api_key`**
-3. **Pegar tu API key**
-4. **Ejecutar workflow**
-
-## 🎯 **Casos de Uso Recomendados**
-
-### **Moda y E-commerce:**
+- “API Key is required”: verifica que pegaste una clave válida.
+- “Module not found”: reinstala dependencias según `requirements_all_nodes.txt` o vuelve a clonar.
+- Verificar importación:
 ```bash
-CL_ImageFidelity + CL_VirtualTryOn = Análisis de productos + Try-on virtual
-```
-
-### **Generación Creativa:**
-```bash
-CL_GeminiFlash + CL_OpenAIChat = Generación de imágenes + Análisis con IA
-```
-
-### **Workflow Completo:**
-```bash
-combined_workflow_example.json = Pipeline completo de análisis a resultado final
-```
-
-## ⚙️ **Configuración de API Keys**
-
-### **Obtener API Keys:**
-```bash
-# OpenAI (CL_ImageFidelity + CL_OpenAIChat)
-https://platform.openai.com/api-keys
-
-# Google (CL_GeminiFlash)
-https://aistudio.google.com/app/apikey
-
-# YourMirror.io (CL_VirtualTryOn)
-https://yourmirror.io/
-```
-
-### **No más archivos config.env:**
-- **Eliminar** archivos `config.env`
-- **Usar** campos `api_key` en los nodos
-- **Funciona inmediatamente** sin reiniciar ComfyUI
-
-## 🔧 **Uso en ComfyUI**
-
-### **1. Buscar nodos:**
-- Clic derecho en canvas → Buscar **"chelogarcho"**
-- O buscar por nombre específico del nodo
-
-### **2. Configurar API keys:**
-- **Pegar API key** en el campo `api_key` del nodo
-- **No compartir** workflows con API keys incluidas
-
-### **3. Ejemplos incluidos:**
-- `workflows_examples/` - Workflows listos para usar
-- `combined_workflow_example.json` - Pipeline completo
-
-## 🐛 **Solución de Problemas**
-
-### **Error: "API Key is required"**
-- **Solución**: Asegúrate de que el campo `api_key` no esté vacío
-- **Verificar**: El campo debe tener tu API key real
-
-### **Error: "Module not found"**
-```bash
-# Reinstalar dependencias:
-./install_jupyter.sh
-
-# Para Windows:
-install_jupyter.bat
-```
-
-### **Verificar instalación:**
-```bash
-# Verificar estructura:
-ls -la custom_nodes/customNodesChelogarcho/
-ls -la custom_nodes/customNodesChelogarcho/__init__.py
-
-# Verificar importación:
-cd custom_nodes/customNodesChelogarcho
 python -c "import customNodesChelogarcho; print('OK')"
 ```
 
-## 📁 **Estructura del Proyecto**
-
-```
-customNodesChelogarcho/
-├── __init__.py                  # 🆕 Registra automáticamente todos los nodos
-├── install_jupyter.sh           # 🚀 INSTALADOR para Jupyter/Vast.ai
-├── install_anywhere.sh          # 🌍 INSTALADOR UNIVERSAL (Linux/Mac)
-├── install_anywhere.bat         # 🌍 INSTALADOR UNIVERSAL (Windows)
-├── nodes/                       # 📦 Directorio de nodos personalizados
-│   ├── CL_ImageFidelity.py     # OpenAI Image Analysis
-│   ├── CL_VirtualTryOn.py      # Virtual Try-On
-│   ├── CL_GeminiFlash.py       # Gemini Flash Image
-│   └── CL_OpenAIChat.py        # AI Chat Integration
-├── workflows_examples/          # Ejemplos de workflows para cada nodo
-├── requirements_all_nodes.txt   # Dependencias unificadas
-└── README.md                    # Documentación completa
-
-## 🌐 **Optimizado para Vast.ai**
-
-- **Acceso**: `http://proxy/8188/`
-- **Instalación automática** con un solo comando
-- **API keys visibles** en cada nodo
-- **No más configuración** complicada
-- **Funciona inmediatamente** después de la instalación
-
-## 🔄 **Actualización**
+## Actualización
 
 ```bash
-git pull origin main
-
-# Actualizar estructura estándar (recomendado):
-./install_jupyter.sh
-
-# Para Windows:
-install_jupyter.bat
-
-# Instalador universal (desde cualquier ubicación):
-./install_anywhere.sh          # Linux/Mac
-install_anywhere.bat           # Windows
-
-# Nota: Ahora usa estructura de paquete Python estándar
-# Todos los nodos se registran automáticamente
+cd customNodesChelogarcho
+git pull
 ```
 
-## 🤝 **Soporte**
+—
 
-- **Desarrollador**: chelogarcho
-- **Documentación**: Este README.md contiene toda la información
-- **Ejemplos**: `workflows_examples/`
-
----
-
-**¡Ahora es más fácil que nunca usar los custom nodes! 🚀**
-
-**Desarrollado con ❤️ por chelogarcho**
+Desarrollado por chelogarcho.
