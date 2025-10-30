@@ -27,6 +27,8 @@ git clone https://github.com/donchelo/customNodesChelogarcho.git
 
 Ejemplos listos: `workflows_examples/` (incluye `combined_workflow_example.json`).
 
+Nota: estos nodos están pensados para ejecutarse dentro de ComfyUI. Algunas dependencias (p. ej., `folder_paths`) existen solo en el entorno de ComfyUI y no fuera de él.
+
 ## API keys
 
 - OpenAI: `https://platform.openai.com/api-keys`
