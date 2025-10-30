@@ -18,15 +18,16 @@ import numpy as np
 from PIL import Image
 from typing import Optional, Tuple, List, Dict, Any
 
-# Try to import Google Generative AI, provide helpful error message if not available
+# Lazy-import: no fallar en import del módulo para que el nodo sea visible en ComfyUI
 try:
-    import google.generativeai as genai
-    from google.generativeai.types import HarmCategory, HarmBlockThreshold
-except ImportError:
-    raise ImportError(
-        "google-generativeai package is required for CL_GeminiFlash node. "
-        "Install with: pip install google-generativeai>=0.8.0"
-    )
+    import google.generativeai as genai  # type: ignore
+    from google.generativeai.types import HarmCategory, HarmBlockThreshold  # type: ignore
+    _HAS_GENAI = True
+except Exception:
+    genai = None  # type: ignore
+    HarmCategory = None  # type: ignore
+    HarmBlockThreshold = None  # type: ignore
+    _HAS_GENAI = False
 
 
 class CL_GeminiFlash:
@@ -47,8 +48,12 @@ class CL_GeminiFlash:
             raise ValueError("Google API Key is required. Please enter your API key in the node.")
         
         try:
-            genai.configure(api_key=api_key.strip())
-            self.client = genai.GenerativeModel('gemini-2.5-flash-image-preview')
+            if not _HAS_GENAI:
+                raise ImportError(
+                    "google-generativeai no está instalado. Instala con: pip install google-generativeai>=0.8.0"
+                )
+            genai.configure(api_key=api_key.strip())  # type: ignore
+            self.client = genai.GenerativeModel('gemini-2.5-flash-image-preview')  # type: ignore
             print("✅ Cliente Gemini Flash Image inicializado correctamente")
             return True
         except Exception as e:
@@ -232,12 +237,14 @@ class CL_GeminiFlash:
             debug_info.append(f"Imágenes de entrada: {image_count}")
             
             # Configurar parámetros de seguridad más permisivos
-            safety_settings = {
-                HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
-                HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_NONE,
-                HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-                HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-            }
+            safety_settings = None
+            if _HAS_GENAI and HarmCategory is not None and HarmBlockThreshold is not None:
+                safety_settings = {
+                    HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
+                    HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_NONE,
+                    HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                    HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                }
             
             # Realizar llamada a la API
             print("🚀 Enviando solicitud a Gemini 2.5 Flash Image...")

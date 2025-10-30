@@ -16,16 +16,19 @@ import base64
 import torch
 import numpy as np
 from PIL import Image, ImageOps
-import folder_paths
-
-# Try to import OpenAI, provide helpful error message if not available
+# `folder_paths` sólo existe dentro de ComfyUI; no debe romper importaciones fuera
 try:
-    from openai import OpenAI
-except ImportError:
-    raise ImportError(
-        "OpenAI package is required for CL_ImageFidelity node. "
-        "Install with: pip install openai>=1.12.0"
-    )
+    import folder_paths  # type: ignore
+except Exception:
+    folder_paths = None  # type: ignore
+
+# Lazy-import de OpenAI para que el nodo sea visible aunque falte la dependencia
+try:
+    from openai import OpenAI  # type: ignore
+    _HAS_OPENAI = True
+except Exception:
+    OpenAI = None  # type: ignore
+    _HAS_OPENAI = False
 
 
 class CL_ImageFidelity:
@@ -46,7 +49,9 @@ class CL_ImageFidelity:
             raise ValueError("OpenAI API Key is required. Please enter your API key in the node.")
         
         try:
-            self.client = OpenAI(api_key=api_key.strip())
+            if not _HAS_OPENAI:
+                raise ImportError("openai no está instalado. Instala con: pip install openai>=1.12.0")
+            self.client = OpenAI(api_key=api_key.strip())  # type: ignore
             return True
         except Exception as e:
             raise ValueError(f"Error initializing OpenAI client: {e}")

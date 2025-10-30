@@ -14,31 +14,31 @@ wheel>=0.37.0
 
 # ===== CL_ImageFidelity Node =====
 # OpenAI API para análisis de fidelidad de imágenes
-openai>=1.12.0
+openai~=1.52.0
 
 # ===== CL_VirtualTryOn Node =====
 # API calls y procesamiento de imágenes
-requests>=2.28.0
+requests~=2.31.0
 
 # ===== CL_GeminiFlash Node =====
 # Google Generative AI para Gemini Flash Image
-google-generativeai>=0.8.0
+google-generativeai~=0.8.3
 
 # ===== CL_OpenAIChat Node =====
 # OpenAI API para chat y procesamiento de imágenes
 # openai ya está incluido arriba
-langdetect>=1.0.9
+langdetect~=1.0.9
 
 # ===== Dependencias Comunes =====
 # Procesamiento de imágenes
-Pillow>=9.0.0
+Pillow~=10.4.0
 # PIL es parte de Pillow, no necesitamos instalarlo por separado
 
 # Machine Learning y procesamiento numérico
 # torch y numpy ya están incluidos en ComfyUI base
 
 # Utilidades adicionales
-typing-extensions>=4.0.0
+typing-extensions>=4.7.0
 
 # Notas de instalación:
 # - torch puede requerir instalación específica según tu sistema

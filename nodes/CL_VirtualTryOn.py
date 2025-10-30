@@ -22,23 +22,6 @@ import time
 import base64
 from typing import Optional, Tuple, Dict, Any
 
-# Try to import required packages, provide helpful error messages if not available
-try:
-    import requests
-except ImportError:
-    raise ImportError(
-        "requests package is required for CL_VirtualTryOn node. "
-        "Install with: pip install requests>=2.28.0"
-    )
-
-try:
-    import numpy as np
-except ImportError:
-    raise ImportError(
-        "numpy package is required for CL_VirtualTryOn node. "
-        "Install with: pip install numpy>=1.21.0"
-    )
-
 
 class CL_VirtualTryOn:
     """

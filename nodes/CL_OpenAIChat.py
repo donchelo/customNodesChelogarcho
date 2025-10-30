@@ -20,23 +20,23 @@ import torch
 import numpy as np
 from PIL import Image
 
-# Try to import required packages, provide helpful error messages if not available
+# Lazy-imports para que el nodo sea visible aunque falten dependencias
 try:
-    import openai
-    from openai import OpenAI
-except ImportError:
-    raise ImportError(
-        "openai package is required for CL_OpenAIChat node. "
-        "Install with: pip install openai>=1.0.0"
-    )
+    import openai  # type: ignore
+    from openai import OpenAI  # type: ignore
+    _HAS_OPENAI = True
+except Exception:
+    openai = None  # type: ignore
+    OpenAI = None  # type: ignore
+    _HAS_OPENAI = False
 
 try:
-    from langdetect import detect, LangDetectException
-except ImportError:
-    raise ImportError(
-        "langdetect package is required for CL_OpenAIChat node. "
-        "Install with: pip install langdetect>=1.0.9"
-    )
+    from langdetect import detect, LangDetectException  # type: ignore
+    _HAS_LANGDETECT = True
+except Exception:
+    detect = None  # type: ignore
+    LangDetectException = Exception  # type: ignore
+    _HAS_LANGDETECT = False
 
 
 class CL_OpenAIChat:
@@ -57,7 +57,9 @@ class CL_OpenAIChat:
             raise ValueError("OpenAI API Key is required. Please enter your API key in the node.")
         
         try:
-            self.client = OpenAI(api_key=api_key.strip())
+            if not _HAS_OPENAI:
+                raise ImportError("openai no está instalado. Instala con: pip install openai>=1.0.0")
+            self.client = OpenAI(api_key=api_key.strip())  # type: ignore
             return True
         except Exception as e:
             raise ValueError(f"Error inicializando cliente OpenAI: {e}")
@@ -136,6 +138,8 @@ class CL_OpenAIChat:
         Detecta el idioma del texto de entrada
         """
         try:
+            if not _HAS_LANGDETECT:
+                return "en"
             if not text or len(text.strip()) < 3:
                 return "en"  # Default a inglés si texto muy corto
             

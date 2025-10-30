@@ -7,9 +7,13 @@ Colección de nodos personalizados para ComfyUI. Diseño simple, sin configuraci
 ```bash
 cd ComfyUI/custom_nodes/
 git clone https://github.com/donchelo/customNodesChelogarcho.git
+cd customNodesChelogarcho
+pip install -r requirements_all_nodes.txt
 ```
 
+- Reinicia ComfyUI tras instalar dependencias.
 - En Jupyter/Vast.ai: accede a `http://proxy/8188/` y busca "chelogarcho".
+- Si no ves los nodos, revisa el log de arranque: se listan al importar el paquete.
 
 
 ## Nodos incluidos
@@ -60,6 +64,7 @@ ComfyUI/
 ```bash
 python -c "import customNodesChelogarcho; print('OK')"
 ```
+- Los nodos aparecen aunque falten dependencias: si una librería falta, verás el nodo, pero fallará al ejecutarlo con un mensaje claro indicando cómo instalar.
 
 ## Actualización
 
