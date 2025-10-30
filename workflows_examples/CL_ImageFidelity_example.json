@@ -1,16 +1,43 @@
 {
-  "last_node_id": 3,
-  "last_link_id": 2,
+  "last_node_id": 6,
+  "last_link_id": 5,
   "nodes": [
     {
       "id": 1,
-      "type": "OpenAIImageFidelityFashion",
-      "pos": [400, 200],
-      "size": {"0": 300, "1": 400},
+      "type": "LoadImage",
+      "pos": [100, 200],
+      "size": {"0": 200, "1": 200},
       "flags": {},
       "order": 0,
       "mode": 0,
+      "inputs": {},
+      "title": "Load Primary Image",
+      "properties": {},
+      "widgets_values": ["fashion_image.png"]
+    },
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": [100, 450],
+      "size": {"0": 200, "1": 200},
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": {},
+      "title": "Load Reference Image (Optional)",
+      "properties": {},
+      "widgets_values": ["reference_image.png"]
+    },
+    {
+      "id": 3,
+      "type": "OpenAIImageFidelityFashion",
+      "pos": [400, 300],
+      "size": {"0": 350, "1": 450},
+      "flags": {},
+      "order": 2,
+      "mode": 0,
       "inputs": {
+        "api_key": "",
         "prompt": "Change the outfit color to blue while preserving all details and textures",
         "primary_image": null,
         "input_fidelity": "high",
@@ -19,11 +46,14 @@
         "output_format": "png",
         "background": "auto",
         "fashion_preset": "outfit_variation",
-        "api_method": "images_api"
+        "api_method": "images_api",
+        "reference_image": null,
+        "mask_image": null
       },
       "title": "OpenAI Image Fidelity Fashion",
       "properties": {},
       "widgets_values": [
+        "",
         "Change the outfit color to blue while preserving all details and textures",
         "high",
         "high",
@@ -35,40 +65,80 @@
       ]
     },
     {
-      "id": 2,
-      "type": "LoadImage",
-      "pos": [100, 200],
-      "size": {"0": 200, "1": 200},
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "inputs": {},
-      "title": "Load Image",
-      "properties": {},
-      "widgets_values": ["example_fashion_image.png"]
-    },
-    {
-      "id": 3,
+      "id": 4,
       "type": "SaveImage",
-      "pos": [700, 200],
+      "pos": [800, 300],
       "size": {"0": 200, "1": 200},
       "flags": {},
-      "order": 2,
+      "order": 3,
       "mode": 0,
       "inputs": {
         "images": null,
         "filename_prefix": "fidelity_output"
       },
-      "title": "Save Image",
+      "title": "Save Result Image",
       "properties": {},
       "widgets_values": ["fidelity_output"]
+    },
+    {
+      "id": 5,
+      "type": "PreviewImage",
+      "pos": [800, 550],
+      "size": {"0": 200, "1": 200},
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": {
+        "images": null
+      },
+      "title": "Preview Result",
+      "properties": {},
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "SaveText",
+      "pos": [800, 100],
+      "size": {"0": 200, "1": 200},
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": {
+        "text": null,
+        "filename_prefix": "fidelity_debug"
+      },
+      "title": "Save Debug Info",
+      "properties": {},
+      "widgets_values": ["fidelity_debug"]
     }
   ],
   "links": [
-    [1, 2, 0, 1, 0],
-    [2, 1, 0, 3, 0]
+    [1, 1, 0, 3, 2],
+    [2, 2, 0, 3, 10],
+    [3, 3, 0, 4, 0],
+    [3, 3, 0, 5, 0],
+    [3, 3, 2, 6, 0]
   ],
-  "groups": [],
+  "groups": [
+    {
+      "title": "Input Images",
+      "color": "#E8F4FD",
+      "pos": [50, 150],
+      "size": {"0": 300, "1": 550}
+    },
+    {
+      "title": "AI Processing",
+      "color": "#FFF2CC",
+      "pos": [350, 250],
+      "size": {"0": 450, "1": 550}
+    },
+    {
+      "title": "Output & Preview",
+      "color": "#E8F5E8",
+      "pos": [750, 50],
+      "size": {"0": 300, "1": 750}
+    }
+  ],
   "config": {},
   "extra": {},
   "version": 0.4

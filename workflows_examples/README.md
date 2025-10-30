@@ -1,108 +1,156 @@
-# 📚 Workflows de Ejemplo - ComfyUI Custom Nodes
+# Workflows de Ejemplo para Nodos Personalizados de Chelogarcho
 
-**Desarrollado por: chelogarcho**
+Este directorio contiene workflows de ejemplo optimizados para ComfyUI que demuestran el uso de los nodos personalizados desarrollados por chelogarcho.
 
-Esta carpeta contiene ejemplos de workflows para cada custom node, mostrando cómo usarlos individualmente y en combinación.
-
-## 🎯 Workflows Individuales
+## 🚀 Workflows Disponibles
 
 ### 1. **CL_ImageFidelity_example.json**
-- **Nodo**: CL_ImageFidelity (OpenAI Image Fidelity Fashion)
-- **Funcionalidad**: Cambio de color de outfit preservando detalles
-- **Uso**: Cargar imagen de moda → Aplicar cambios → Guardar resultado
+**Descripción**: Workflow para edición de imágenes de moda con alta fidelidad usando OpenAI Image 1.
 
-### 2. **CL_VirtualTryOn_example.json**
-- **Nodo**: CL_VirtualTryOn (YourMirror Virtual Try-On)
-- **Funcionalidad**: Probar gafas virtualmente
-- **Uso**: Cargar imagen de persona + producto → Aplicar try-on → Guardar resultado
+**Características**:
+- ✅ **Entradas**: Imagen principal + imagen de referencia opcional
+- ✅ **Procesamiento**: OpenAI Image Fidelity con presets de moda
+- ✅ **Salidas**: Imagen editada + preview + información de debug
+- ✅ **Organización**: Grupos visuales para Input, AI Processing y Output
 
-### 3. **CL_GeminiFlash_example.json**
-- **Nodo**: CL_GeminiFlash (Google Gemini Flash Image)
-- **Funcionalidad**: Generación de paisajes con Gemini
-- **Uso**: Escribir prompt → Generar imagen → Guardar resultado
-
-### 4. **CL_OpenAIChat_example.json**
-- **Nodo**: CL_OpenAIChat (OpenAI Simple Chat)
-- **Funcionalidad**: Análisis de imagen de moda
-- **Uso**: Cargar imagen → Analizar con IA → Guardar análisis
-
-## 🔄 Workflow Combinado
-
-### 5. **combined_workflow_example.json**
-- **Nodos**: Todos los custom nodes trabajando juntos
-- **Funcionalidad**: Pipeline completo de análisis y mejora de moda
-- **Flujo**:
-  1. **Análisis**: Chat con IA analiza imagen de moda
-  2. **Mejora**: inputFidelity aplica sugerencias
-  3. **Try-On**: MirrorNode prueba nueva prenda
-  4. **Composición**: bananaNode crea resultado final
-
-## 📖 Cómo Usar los Workflows
-
-### 1. **Cargar en ComfyUI**
-- Abrir ComfyUI
-- Hacer clic en "Load" en la barra superior
-- Seleccionar el archivo .json deseado
-
-### 2. **Configurar API Keys**
-- Asegúrate de tener configuradas las API keys necesarias
-- Ver `config.env.example` para configuración
-
-### 3. **Personalizar**
-- Modifica los prompts según tus necesidades
-- Ajusta parámetros como calidad, tamaño, etc.
-- Cambia las imágenes de entrada
-
-### 4. **Ejecutar**
-- Hacer clic en "Queue Prompt" para ejecutar
-- Monitorear el progreso en la consola
-- Los resultados se guardarán automáticamente
-
-## 🎨 Casos de Uso Recomendados
-
-### **Moda y E-commerce**
-- `CL_ImageFidelity_example.json` + `CL_VirtualTryOn_example.json`
-- Análisis de productos + Try-on virtual
-
-### **Generación Creativa**
-- `CL_GeminiFlash_example.json` + `CL_OpenAIChat_example.json`
-- Generación de imágenes + Análisis con IA
-
-### **Workflow Completo**
-- `combined_workflow_example.json`
-- Pipeline completo de análisis a resultado final
-
-## ⚠️ Notas Importantes
-
-1. **API Keys**: Todos los workflows requieren API keys configuradas
-2. **Imágenes**: Los workflows usan nombres de archivo de ejemplo
-3. **Dependencias**: Asegúrate de que todos los custom nodes estén instalados
-4. **Configuración**: Revisa la documentación de cada nodo para opciones avanzadas
-
-## 🔧 Personalización
-
-### **Modificar Prompts**
-```json
-"prompt": "Tu prompt personalizado aquí"
-```
-
-### **Cambiar Modelos**
-```json
-"model": "gpt-4o"  // Para openai_simple_chat
-```
-
-### **Ajustar Calidad**
-```json
-"quality": "high"  // Para inputFidelity y mirrorNode
-```
-
-## 📞 Soporte
-
-Para preguntas sobre los workflows o personalización:
-- Revisa la documentación de cada nodo
-- Consulta `README_CUSTOM_NODES.md`
-- Contacta al desarrollador: chelogarcho
+**Uso**: Ideal para cambios de color de ropa, variaciones de estilo y edición de productos de moda.
 
 ---
 
-**¡Disfruta explorando las posibilidades de estos custom nodes! 🚀✨**
+### 2. **CL_GeminiFlash_example.json**
+**Descripción**: Workflow para generación y edición de imágenes usando Google Gemini 2.5 Flash.
+
+**Características**:
+- ✅ **Entradas**: Imágenes opcionales para referencia y edición
+- ✅ **Procesamiento**: Gemini Flash con múltiples modos (generación, edición, fusión)
+- ✅ **Salidas**: Imagen generada + preview + información de debug
+- ✅ **Organización**: Grupos visuales para Input, AI Generation y Output
+
+**Uso**: Perfecto para generación de paisajes, edición de imágenes y composiciones creativas.
+
+---
+
+### 3. **CL_OpenAIChat_example.json**
+**Descripción**: Workflow para análisis de imágenes usando ChatGPT con capacidades de visión.
+
+**Características**:
+- ✅ **Entradas**: Hasta 3 imágenes para análisis
+- ✅ **Procesamiento**: OpenAI GPT con análisis visual y prompts personalizados
+- ✅ **Salidas**: Análisis de texto + múltiples previews + guardado de respuestas
+- ✅ **Organización**: Grupos visuales para Input, AI Chat Processing y Text Output
+
+**Uso**: Excelente para análisis de moda, descripción de productos y asistencia visual.
+
+---
+
+### 4. **CL_VirtualTryOn_example.json**
+**Descripción**: Workflow para probar virtualmente prendas usando YourMirror.io API.
+
+**Características**:
+- ✅ **Entradas**: Imagen de persona + imagen de producto + máscara opcional
+- ✅ **Procesamiento**: Virtual Try-On con múltiples tipos de prendas
+- ✅ **Salidas**: Imagen de resultado + preview + logs de debug
+- ✅ **Organización**: Grupos visuales para Input, Virtual Try-On Processing y Output
+
+**Uso**: Ideal para probar gafas, ropa, calzado y accesorios virtualmente.
+
+---
+
+### 5. **combined_workflow_example.json**
+**Descripción**: Workflow completo que combina todos los nodos en un flujo de trabajo de moda.
+
+**Características**:
+- ✅ **Entradas**: Múltiples imágenes para diferentes propósitos
+- ✅ **Procesamiento**: Análisis → Mejora → Try-On → Composición final
+- ✅ **Salidas**: Múltiples resultados intermedios y finales
+- ✅ **Organización**: 6 grupos visuales para flujo lógico y claro
+
+**Uso**: Workflow completo para proyectos de moda profesionales.
+
+---
+
+## 🔧 Mejoras Implementadas
+
+### **Según Mejores Prácticas de ComfyUI**
+
+1. **✅ Conexiones Correctas**: Todos los inputs y outputs están correctamente conectados
+2. **✅ Nodos de Entrada**: LoadImage para todas las imágenes de entrada
+3. **✅ Nodos de Salida**: SaveImage, SaveText, PreviewImage, PreviewText apropiados
+4. **✅ Flujo Lógico**: Orden de ejecución optimizado (order field)
+5. **✅ Organización Visual**: Grupos de colores para mejor legibilidad
+6. **✅ Posicionamiento**: Layout optimizado para flujo visual claro
+7. **✅ Versión**: Compatible con ComfyUI v0.4+
+
+### **Estructura Estándar de Cada Workflow**
+
+```
+Input Images → AI Processing → Output & Preview
+     ↓              ↓              ↓
+  LoadImage    Custom Node    SaveImage/Text
+  LoadImage                  PreviewImage/Text
+  LoadImage                  SaveDebug/Info
+```
+
+---
+
+## 📋 Requisitos Previos
+
+### **Nodos Personalizados Requeridos**
+- `CL_ImageFidelity` - Para edición de imágenes de moda
+- `CL_GeminiFlash` - Para generación con Gemini
+- `CL_OpenAIChat` - Para análisis con ChatGPT
+- `CL_VirtualTryOn` - Para try-on virtual
+
+### **Dependencias de ComfyUI**
+- Nodos estándar: `LoadImage`, `SaveImage`, `SaveText`, `PreviewImage`, `PreviewText`
+- Versión mínima: ComfyUI v0.4+
+
+### **API Keys Requeridas**
+- **OpenAI**: Para Image Fidelity y Chat
+- **Google**: Para Gemini Flash
+- **YourMirror**: Para Virtual Try-On
+
+---
+
+## 🚀 Cómo Usar
+
+1. **Importar Workflow**: Arrastra el archivo .json a ComfyUI
+2. **Configurar API Keys**: Ingresa tus claves en los nodos correspondientes
+3. **Cargar Imágenes**: Usa LoadImage para tus archivos
+4. **Ejecutar**: Haz clic en "Queue Prompt" para procesar
+5. **Revisar Resultados**: Usa los nodos de preview y save
+
+---
+
+## 🔍 Troubleshooting
+
+### **Problemas Comunes**
+- **Conexiones Rojas**: Verifica que los tipos de datos coincidan
+- **Errores de API**: Confirma que las claves API sean válidas
+- **Imágenes No Cargadas**: Asegúrate de que los archivos existan en la ruta especificada
+
+### **Verificación de Workflow**
+- Todos los nodos deben tener conexiones válidas
+- Los inputs requeridos deben estar conectados
+- Los outputs deben tener destinos apropiados
+
+---
+
+## 📚 Recursos Adicionales
+
+- **Documentación ComfyUI**: [github.com/comfyanonymous/ComfyUI](https://github.com/comfyanonymous/ComfyUI)
+- **Nodos Personalizados**: Ubicados en `custom_nodes/`
+- **Ejemplos de Imágenes**: Usa cualquier imagen PNG/JPG para testing
+
+---
+
+## 🎯 Casos de Uso Recomendados
+
+- **Moda y E-commerce**: Edición de productos, try-on virtual
+- **Marketing**: Generación de contenido visual, análisis de imágenes
+- **Diseño**: Composición de imágenes, variaciones de estilo
+- **Investigación**: Análisis de tendencias, estudio de productos
+
+---
+
+*Desarrollado por chelogarcho - Optimizado para ComfyUI v0.4+*

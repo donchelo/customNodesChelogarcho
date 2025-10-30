@@ -1,6 +1,6 @@
 {
-  "last_node_id": 8,
-  "last_link_id": 7,
+  "last_node_id": 12,
+  "last_link_id": 11,
   "nodes": [
     {
       "id": 1,
@@ -17,40 +17,55 @@
     },
     {
       "id": 2,
+      "type": "LoadImage",
+      "pos": [100, 350],
+      "size": {"0": 200, "1": 200},
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": {},
+      "title": "Load Product Image",
+      "properties": {},
+      "widgets_values": ["new_top_product.png"]
+    },
+    {
+      "id": 3,
       "type": "OpenAI_Simple_Chat",
       "pos": [400, 100],
       "size": {"0": 300, "1": 300},
       "flags": {},
-      "order": 1,
+      "order": 2,
       "mode": 0,
       "inputs": {
+        "api_key": "",
         "user_prompt": "Analyze this fashion image and suggest improvements",
         "model": "gpt-4o-mini",
         "max_characters": 300,
         "system_prompt": "You are a fashion expert. Analyze the image and provide specific improvement suggestions.",
-        "api_key": "",
-        "use_env_key": true
+        "image_1": null,
+        "image_2": null,
+        "image_3": null
       },
       "title": "Fashion Analysis Chat",
       "properties": {},
       "widgets_values": [
+        "",
         "Analyze this fashion image and suggest improvements",
         "gpt-4o-mini",
         300,
-        "You are a fashion expert. Analyze the image and provide specific improvement suggestions.",
-        "",
-        true
+        "You are a fashion expert. Analyze the image and provide specific improvement suggestions."
       ]
     },
     {
-      "id": 3,
+      "id": 4,
       "type": "OpenAIImageFidelityFashion",
       "pos": [400, 450],
       "size": {"0": 300, "1": 350},
       "flags": {},
-      "order": 2,
+      "order": 3,
       "mode": 0,
       "inputs": {
+        "api_key": "",
         "prompt": "Apply the suggested improvements while maintaining high fidelity",
         "primary_image": null,
         "input_fidelity": "high",
@@ -59,11 +74,14 @@
         "output_format": "png",
         "background": "auto",
         "fashion_preset": "style_transfer",
-        "api_method": "images_api"
+        "api_method": "images_api",
+        "reference_image": null,
+        "mask_image": null
       },
       "title": "Apply Improvements",
       "properties": {},
       "widgets_values": [
+        "",
         "Apply the suggested improvements while maintaining high fidelity",
         "high",
         "high",
@@ -75,41 +93,28 @@
       ]
     },
     {
-      "id": 4,
+      "id": 5,
       "type": "YourMirrorVirtualTryOn",
       "pos": [800, 450],
       "size": {"0": 300, "1": 350},
       "flags": {},
-      "order": 3,
+      "order": 4,
       "mode": 0,
       "inputs": {
+        "api_key": "",
         "base_image": null,
         "product_image": null,
         "workflow_type": "top",
         "quality": "high",
-        "api_key": ""
+        "mask_image": null
       },
       "title": "Virtual Try-On",
       "properties": {},
       "widgets_values": [
         "",
         "top",
-        "high",
-        ""
+        "high"
       ]
-    },
-    {
-      "id": 5,
-      "type": "LoadImage",
-      "pos": [800, 100],
-      "size": {"0": 200, "1": 200},
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": {},
-      "title": "Load Product Image",
-      "properties": {},
-      "widgets_values": ["new_top_product.png"]
     },
     {
       "id": 6,
@@ -120,18 +125,22 @@
       "order": 5,
       "mode": 0,
       "inputs": {
+        "api_key": "",
         "prompt": "Create a final fashion composition combining all elements",
         "mode": "multi_image_fusion",
         "model": "gemini-2.5-flash-image-preview",
-        "use_env_key": true
+        "primary_image": null,
+        "reference_image": null,
+        "secondary_image": null,
+        "mask_image": null
       },
       "title": "Final Composition",
       "properties": {},
       "widgets_values": [
+        "",
         "Create a final fashion composition combining all elements",
         "multi_image_fusion",
-        "gemini-2.5-flash-image-preview",
-        true
+        "gemini-2.5-flash-image-preview"
       ]
     },
     {
@@ -165,23 +174,120 @@
       "title": "Save Analysis",
       "properties": {},
       "widgets_values": ["fashion_analysis"]
+    },
+    {
+      "id": 9,
+      "type": "PreviewImage",
+      "pos": [1600, 700],
+      "size": {"0": 200, "1": 200},
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": {
+        "images": null
+      },
+      "title": "Preview Final Result",
+      "properties": {},
+      "widgets_values": []
+    },
+    {
+      "id": 10,
+      "type": "SaveImage",
+      "pos": [1200, 850],
+      "size": {"0": 200, "1": 200},
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": {
+        "images": null,
+        "filename_prefix": "enhanced_fashion"
+      },
+      "title": "Save Enhanced Fashion",
+      "properties": {},
+      "widgets_values": ["enhanced_fashion"]
+    },
+    {
+      "id": 11,
+      "type": "SaveImage",
+      "pos": [800, 850],
+      "size": {"0": 200, "1": 200},
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": {
+        "images": null,
+        "filename_prefix": "tryon_result"
+      },
+      "title": "Save Try-On Result",
+      "properties": {},
+      "widgets_values": ["tryon_result"]
+    },
+    {
+      "id": 12,
+      "type": "PreviewText",
+      "pos": [400, 850],
+      "size": {"0": 200, "1": 200},
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": {
+        "text": null
+      },
+      "title": "Preview Analysis",
+      "properties": {},
+      "widgets_values": []
     }
   ],
   "links": [
-    [1, 1, 0, 2, 0],
-    [2, 1, 0, 3, 0],
-    [3, 1, 0, 4, 0],
-    [4, 1, 0, 5, 0],
-    [5, 1, 0, 6, 0],
-    [6, 1, 0, 7, 0],
-    [7, 2, 0, 8, 0]
+    [1, 1, 0, 3, 5],
+    [1, 1, 0, 4, 2],
+    [2, 2, 0, 5, 2],
+    [3, 3, 0, 4, 0],
+    [3, 3, 0, 8, 0],
+    [3, 3, 0, 12, 0],
+    [4, 4, 0, 5, 1],
+    [4, 4, 0, 10, 0],
+    [5, 5, 0, 6, 4],
+    [5, 5, 0, 11, 0],
+    [6, 6, 0, 7, 0],
+    [6, 6, 0, 9, 0]
   ],
   "groups": [
     {
-      "title": "Workflow: Fashion Analysis & Enhancement",
-      "color": "#FF6B6B",
+      "title": "Input Images",
+      "color": "#E8F4FD",
       "pos": [50, 50],
-      "size": {"0": 1800, "1": 800}
+      "size": {"0": 300, "1": 550}
+    },
+    {
+      "title": "AI Analysis & Enhancement",
+      "color": "#FFF2CC",
+      "pos": [350, 50],
+      "size": {"0": 400, "1": 800}
+    },
+    {
+      "title": "Virtual Try-On",
+      "color": "#FFE6CC",
+      "pos": [750, 400],
+      "size": {"0": 400, "1": 450}
+    },
+    {
+      "title": "Final Composition",
+      "color": "#E6F3FF",
+      "pos": [1150, 400],
+      "size": {"0": 400, "1": 450}
+    },
+    {
+      "title": "Output & Preview",
+      "color": "#E8F5E8",
+      "pos": [1550, 50],
+      "size": {"0": 300, "1": 900}
+    },
+    {
+      "title": "Intermediate Results",
+      "color": "#F0F8FF",
+      "pos": [750, 800],
+      "size": {"0": 600, "1": 300}
     }
   ],
   "config": {},

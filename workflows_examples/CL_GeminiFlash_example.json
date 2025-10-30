@@ -1,34 +1,24 @@
 {
-  "last_node_id": 3,
-  "last_link_id": 2,
+  "last_node_id": 6,
+  "last_link_id": 5,
   "nodes": [
     {
       "id": 1,
-      "type": "GeminiFlashImage",
-      "pos": [400, 200],
-      "size": {"0": 300, "1": 400},
+      "type": "LoadImage",
+      "pos": [100, 200],
+      "size": {"0": 200, "1": 200},
       "flags": {},
       "order": 0,
       "mode": 0,
-      "inputs": {
-        "prompt": "Generate a beautiful landscape with mountains and a lake",
-        "mode": "generate",
-        "model": "gemini-2.5-flash-image-preview",
-        "use_env_key": true
-      },
-      "title": "Gemini Flash Image",
+      "inputs": {},
+      "title": "Load Primary Image (Optional)",
       "properties": {},
-      "widgets_values": [
-        "Generate a beautiful landscape with mountains and a lake",
-        "generate",
-        "gemini-2.5-flash-image-preview",
-        true
-      ]
+      "widgets_values": ["primary_image.png"]
     },
     {
       "id": 2,
       "type": "LoadImage",
-      "pos": [100, 200],
+      "pos": [100, 450],
       "size": {"0": 200, "1": 200},
       "flags": {},
       "order": 1,
@@ -40,26 +30,106 @@
     },
     {
       "id": 3,
-      "type": "SaveImage",
-      "pos": [700, 200],
-      "size": {"0": 200, "1": 200},
+      "type": "GeminiFlashImage",
+      "pos": [400, 300],
+      "size": {"0": 350, "1": 450},
       "flags": {},
       "order": 2,
+      "mode": 0,
+      "inputs": {
+        "api_key": "",
+        "prompt": "Generate a beautiful landscape with mountains and a lake",
+        "mode": "generate",
+        "model": "gemini-2.5-flash-image-preview",
+        "primary_image": null,
+        "reference_image": null,
+        "secondary_image": null,
+        "mask_image": null
+      },
+      "title": "Gemini Flash Image",
+      "properties": {},
+      "widgets_values": [
+        "",
+        "Generate a beautiful landscape with mountains and a lake",
+        "generate",
+        "gemini-2.5-flash-image-preview"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "SaveImage",
+      "pos": [800, 300],
+      "size": {"0": 200, "1": 200},
+      "flags": {},
+      "order": 3,
       "mode": 0,
       "inputs": {
         "images": null,
         "filename_prefix": "gemini_output"
       },
-      "title": "Save Gemini Result",
+      "title": "Save Result Image",
       "properties": {},
       "widgets_values": ["gemini_output"]
+    },
+    {
+      "id": 5,
+      "type": "PreviewImage",
+      "pos": [800, 550],
+      "size": {"0": 200, "1": 200},
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": {
+        "images": null
+      },
+      "title": "Preview Result",
+      "properties": {},
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "SaveText",
+      "pos": [800, 100],
+      "size": {"0": 200, "1": 200},
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": {
+        "text": null,
+        "filename_prefix": "gemini_debug"
+      },
+      "title": "Save Debug Info",
+      "properties": {},
+      "widgets_values": ["gemini_debug"]
     }
   ],
   "links": [
-    [1, 2, 0, 1, 0],
-    [2, 1, 0, 3, 0]
+    [1, 1, 0, 3, 4],
+    [2, 2, 0, 3, 5],
+    [3, 3, 0, 4, 0],
+    [3, 3, 0, 5, 0],
+    [3, 3, 2, 6, 0]
   ],
-  "groups": [],
+  "groups": [
+    {
+      "title": "Input Images",
+      "color": "#E8F4FD",
+      "pos": [50, 150],
+      "size": {"0": 300, "1": 550}
+    },
+    {
+      "title": "AI Generation",
+      "color": "#FFF2CC",
+      "pos": [350, 250],
+      "size": {"0": 450, "1": 550}
+    },
+    {
+      "title": "Output & Preview",
+      "color": "#E8F5E8",
+      "pos": [750, 50],
+      "size": {"0": 300, "1": 750}
+    }
+  ],
   "config": {},
   "extra": {},
   "version": 0.4
